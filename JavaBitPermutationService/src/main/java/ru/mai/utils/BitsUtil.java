@@ -28,4 +28,8 @@ public class BitsUtil {
         }
         System.out.println();
     }
+
+    public static byte[] xor(byte[] first, byte[] second) {
+        return null;
+    }
 }
