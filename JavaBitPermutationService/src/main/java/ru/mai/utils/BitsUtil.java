@@ -1,4 +1,4 @@
-package ru.mai;
+package ru.mai.utils;
 
 public class BitsUtil {
     public static byte[] permutation(byte[] arrayBits, int[] permutationValues) throws IllegalArgumentException {

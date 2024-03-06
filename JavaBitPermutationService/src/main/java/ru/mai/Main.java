@@ -1,6 +1,7 @@
 package ru.mai;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.mai.utils.BitsUtil;
 
 @Slf4j
 public class Main {
