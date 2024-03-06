@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_interface.Encryption;
 import ru.mai.encryption.encryption_interface.FeistelNetwork;
 import ru.mai.encryption.encryption_interface.RoundKeyGenerator;
-import ru.mai.utils.BitsUtil;
+import ru.mai.utils.BytesUtil;
 
 @AllArgsConstructor
 public class DESFeistelNetwork implements FeistelNetwork {
@@ -13,23 +13,15 @@ public class DESFeistelNetwork implements FeistelNetwork {
 
     @Override
     public byte[] apply(byte[] bytes, byte[] key, int numRounds) {
-        byte[] result = new byte[bytes.length];
-        byte[] leftPart = new byte[bytes.length / 2];
-        byte[] rightPart = new byte[bytes.length / 2];
+        byte[][] splitHalfBytes = BytesUtil.splitInHalf(bytes);
+        byte[][] roundKeys = keyGenerator.generate(key);
 
-        System.arraycopy(bytes, 0, leftPart, 0, bytes.length / 2);
-        System.arraycopy(bytes, bytes.length / 2, rightPart, 0, bytes.length / 2);
-
-        for (int i = 0; i < numRounds; i++) {
-            byte[] roundKey = keyGenerator.generateKeyRound(key);
-            byte[] temp = leftPart;
-            leftPart = BitsUtil.xor(rightPart, encryption.encrypt(leftPart, roundKey));
-            rightPart = temp;
+        for (int i = 0; i < numRounds - 1; i++) {
+            byte[] temp = splitHalfBytes[1];
+            splitHalfBytes[1] = BytesUtil.xor(splitHalfBytes[0], encryption.apply(splitHalfBytes[1], roundKeys[i]));
+            splitHalfBytes[0] = temp;
         }
 
-        System.arraycopy(bytes, 0, result, 0, bytes.length / 2);
-        System.arraycopy(bytes, bytes.length / 2, result, bytes.length / 2, bytes.length / 2);
-
-        return result;
+        return BytesUtil.mergePart(BytesUtil.xor(splitHalfBytes[0], encryption.apply(splitHalfBytes[1], roundKeys[numRounds - 1])), splitHalfBytes[1]);
     }
 }
