@@ -4,8 +4,6 @@ import ru.mai.encryption.encryption_interface.RoundKeyGenerator;
 import ru.mai.utils.BitsUtil;
 import ru.mai.utils.BytesUtil;
 
-import java.util.Arrays;
-
 public class DESRoundKeyGenerator implements RoundKeyGenerator {
     private static final int SIZE_KEY_BITS = 56;
 

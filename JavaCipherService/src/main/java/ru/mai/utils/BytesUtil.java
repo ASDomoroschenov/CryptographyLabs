@@ -1,7 +1,5 @@
 package ru.mai.utils;
 
-import java.util.Arrays;
-
 public class BytesUtil {
     public static byte[] cycleLeftShift(byte[] bytes, int bits, int k) {
         long number = bytesToLong(bytes);

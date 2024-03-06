@@ -28,7 +28,7 @@ public class EncryptionService {
     private StuffingMode stuffingMode;
     private byte[] initialVector;
 
-    public EncryptionService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, Object ... additionalArgs) {
+    public EncryptionService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, Object... additionalArgs) {
         this.key = key;
         this.cipherAlgorithm = cipherAlgorithm;
         this.encryptionMode = encryptionMode;
@@ -36,7 +36,7 @@ public class EncryptionService {
         initialVector = null;
     }
 
-    public EncryptionService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, byte[] initialVector, Object ... additionalArgs) {
+    public EncryptionService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, byte[] initialVector, Object... additionalArgs) {
         this.key = key;
         this.cipherAlgorithm = cipherAlgorithm;
         this.encryptionMode = encryptionMode;

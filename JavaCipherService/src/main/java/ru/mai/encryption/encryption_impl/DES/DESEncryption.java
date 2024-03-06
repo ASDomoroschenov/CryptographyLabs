@@ -4,8 +4,6 @@ import ru.mai.encryption.encryption_interface.Encryption;
 import ru.mai.utils.BitsUtil;
 import ru.mai.utils.BytesUtil;
 
-import java.util.Arrays;
-
 public class DESEncryption implements Encryption {
     private static final int[] EXTENSION_BLOCK_PERMUTATION = {
             32, 1, 2, 3, 4, 5,
@@ -68,7 +66,7 @@ public class DESEncryption implements Encryption {
                     {2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11}
             }
     };
-    
+
     private static final int[] P_BLOCK = {
             16, 7, 20, 21, 29, 12, 28, 17,
             1, 15, 23, 26, 5, 18, 31, 10,
