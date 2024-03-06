@@ -1,35 +1,28 @@
 package ru.mai.utils;
 
 public class BitsUtil {
-    public static byte[] permutation(byte[] arrayBits, int[] permutationValues) throws IllegalArgumentException {
-        byte[] permutationResult = new byte[(permutationValues.length + Byte.SIZE - 1) / Byte.SIZE];
-
-        for (int i = 0; i < permutationValues.length; i++) {
-            permutationResult[i / Byte.SIZE] |= (byte) (getBit(arrayBits, permutationValues[i]) << (Byte.SIZE - (i % Byte.SIZE) - 1));
-        }
-
-        return permutationResult;
+    public static long cyclicLeftShift(long number, int bits, int k) {
+        return ((number & ((1L << (bits - k)) - 1)) << k) | ((number & (((1L << k) - 1) << (bits - k))) >> (bits - k));
     }
 
-    public static byte getBit(byte[] arrayBits, int indexBit) {
-        if (indexBit > arrayBits.length * Byte.SIZE || indexBit <= 0) {
-            throw new IllegalArgumentException("Index out of arrayBits bounds");
-        }
-
-        int indexBlock = (indexBit - 1) / Byte.SIZE;
-        int indexBitInBlock = indexBit - indexBlock * Byte.SIZE;
-
-        return (byte) ((arrayBits[indexBlock] >> (Byte.SIZE - indexBitInBlock)) & 1);
+    public static long getFirstNBits(long number, int bits) {
+        return ((number & (((1L << bits) - 1) << (Long.SIZE - bits))) >>> (Long.SIZE - bits));
     }
 
-    public static void outputBits(byte[] arrayBits) {
-        for (int i = 0; i < arrayBits.length * Byte.SIZE; i++) {
-            System.out.print(getBit(arrayBits, i + 1));
+    public static void printBits(long number) {
+        byte[] output = new byte[Long.BYTES];
+
+        for (int i = 0; i < Long.BYTES; i++) {
+            output[Long.BYTES - i - 1] = (byte) (number & ((1 << Byte.SIZE) - 1));
+            number >>= Byte.SIZE;
+        }
+
+        for (int i = 0; i < Long.BYTES; i++) {
+            for (int j = 0; j < Byte.SIZE; j++) {
+                System.out.print(((output[i] << j) >> (Byte.SIZE - 1)) & 1);
+            }
+            System.out.print(" ");
         }
         System.out.println();
-    }
-
-    public static byte[] xor(byte[] first, byte[] second) {
-        return null;
     }
 }
