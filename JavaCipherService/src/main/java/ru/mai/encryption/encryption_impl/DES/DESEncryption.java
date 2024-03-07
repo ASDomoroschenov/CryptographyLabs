@@ -90,8 +90,6 @@ public class DESEncryption implements Encryption {
             xorKeyAndRight <<= 6;
         }
 
-        System.out.println(result);
-
         byte[] bytesResult = BytesUtil.longToBytes(result >> Long.SIZE / 2, Long.BYTES / 2);
 
         return BytesUtil.permutation(bytesResult, P_BLOCK);

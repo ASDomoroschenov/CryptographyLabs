@@ -11,11 +11,11 @@ public class Main {
         DES des = new DES();
 
         byte[] key = {2, 3, 4, 5, 6, 7, 8};
-        byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8};
+        byte[] bytes = {1, 3, 3, 4, 5, 6, 7, 8};
         byte[] encBytes = des.encrypt(bytes, key);
         byte[] result = des.decrypt(encBytes, key);
 
-        System.out.println(Arrays.toString(result));
+        log.info(Arrays.toString(result));
     }
 }
 
