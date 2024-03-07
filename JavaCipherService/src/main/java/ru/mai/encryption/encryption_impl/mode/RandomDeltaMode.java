@@ -4,7 +4,7 @@ import ru.mai.encryption.encryption_interface.CipherMode;
 
 public class RandomDeltaMode implements CipherMode {
     @Override
-    public byte[] couple(byte[] firstBlock, byte[] secondBlock) {
+    public byte[] couple(byte[] textBlock, byte[] otherBlock) {
         return new byte[0];
     }
 }

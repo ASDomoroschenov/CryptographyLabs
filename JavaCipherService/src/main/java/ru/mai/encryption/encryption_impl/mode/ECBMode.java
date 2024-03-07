@@ -4,7 +4,7 @@ import ru.mai.encryption.encryption_interface.CipherMode;
 
 public class ECBMode implements CipherMode {
     @Override
-    public byte[] couple(byte[] firstBlock, byte[] secondBlock) {
-        return new byte[0];
+    public byte[] couple(byte[] textBlock, byte[] otherBlock) {
+        return textBlock;
     }
 }
