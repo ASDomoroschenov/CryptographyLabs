@@ -39,7 +39,7 @@ public class CBCMode implements ICipherMode {
     public byte[] decryptText(byte[] text) throws ExecutionException, InterruptedException {
         IThreadCipher threadCipher = new ThreadCipher(
                 cipher.getTextBlockSize(),
-                new ThreadTaskEncryptCBC(cipher, initialVector),
+                new ThreadTaskDecryptCBC(cipher, initialVector),
                 new CollectTextMode());
 
         return threadCipher.cipher(text);

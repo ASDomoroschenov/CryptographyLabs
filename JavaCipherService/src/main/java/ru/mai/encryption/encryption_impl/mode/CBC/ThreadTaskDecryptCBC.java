@@ -7,7 +7,7 @@ import ru.mai.encryption.encryption_interface.ISymmetricCipher;
 import ru.mai.utils.BytesUtil;
 
 @AllArgsConstructor
-public class ThreadTaskEncryptCBC implements IThreadTask {
+public class ThreadTaskDecryptCBC implements IThreadTask {
     private ISymmetricCipher cipher;
     private byte[] initialVector;
 

@@ -84,7 +84,7 @@ public class EncryptionService {
                 return new PCBCMode(symmetricCipher);
             }
             case CFB -> {
-                return new CFBMode(symmetricCipher);
+                return new CFBMode(symmetricCipher, initialVector);
             }
             case OFB -> {
                 return new OFBMode(symmetricCipher);

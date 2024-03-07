@@ -18,7 +18,7 @@ public class Main {
         EncryptionService service = new EncryptionService(
                 key,
                 CipherAlgorithm.DES,
-                EncryptionMode.CBC,
+                EncryptionMode.CFB,
                 StuffingMode.ANSI_X_923,
                 new byte[] {1, 2, 3, 4, 5, 6, 7, 8});
 
