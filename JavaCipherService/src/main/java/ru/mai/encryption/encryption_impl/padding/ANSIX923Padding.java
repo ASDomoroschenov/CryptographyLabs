@@ -1,8 +1,8 @@
 package ru.mai.encryption.encryption_impl.padding;
 
-import ru.mai.encryption.encryption_interface.Padding;
+import ru.mai.encryption.encryption_interface.IPadding;
 
-public class ANSIX923Padding implements Padding {
+public class ANSIX923Padding implements IPadding {
     @Override
     public byte[] addPAdding(byte[] bytes, int textBlockSize) {
         byte valuePadding = (byte) (textBlockSize - bytes.length % textBlockSize);

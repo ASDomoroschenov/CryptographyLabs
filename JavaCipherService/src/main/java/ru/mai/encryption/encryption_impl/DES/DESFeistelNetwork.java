@@ -1,15 +1,15 @@
 package ru.mai.encryption.encryption_impl.DES;
 
 import lombok.AllArgsConstructor;
-import ru.mai.encryption.encryption_interface.Encryption;
-import ru.mai.encryption.encryption_interface.FeistelNetwork;
-import ru.mai.encryption.encryption_interface.RoundKeyGenerator;
+import ru.mai.encryption.encryption_interface.IEncryption;
+import ru.mai.encryption.encryption_interface.IFeistelNetwork;
+import ru.mai.encryption.encryption_interface.IRoundKeyGenerator;
 import ru.mai.utils.BytesUtil;
 
 @AllArgsConstructor
-public class DESFeistelNetwork implements FeistelNetwork {
-    private RoundKeyGenerator keyGenerator;
-    private Encryption encryption;
+public class DESFeistelNetwork implements IFeistelNetwork {
+    private IRoundKeyGenerator keyGenerator;
+    private IEncryption encryption;
 
     @Override
     public byte[] apply(byte[] bytes, byte[] key, int numRounds) {

@@ -7,25 +7,28 @@ import ru.mai.encryption.encryption_service.EncryptionService.StuffingMode;
 import ru.mai.encryption.encryption_service.EncryptionService.EncryptionMode;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class Main {
     public static void main(String[] args) {
         byte[] key = {1, 2, 3, 4, 5, 6, 7};
-        byte[] text = {1, 1, 1, 1, 5, 6, 7};
+        byte[] text = {1, 1, 1, 1, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1};
 
         EncryptionService service = new EncryptionService(
                 key,
                 CipherAlgorithm.DES,
-                EncryptionMode.ECB,
-                StuffingMode.ZEROS);
+                EncryptionMode.CBC,
+                StuffingMode.ANSI_X_923,
+                new byte[] {1, 2, 3, 4, 5, 6, 7, 8});
 
-        byte[] encryptText = service.encrypt(text);
-
-        System.out.println(Arrays.toString(encryptText));
-        System.out.println(Arrays.toString(service.decipher(encryptText)));
+        try {
+            byte[] encryptText = service.encrypt(text);
+            byte[] decryptText = service.decipher(encryptText);
+            System.out.println(Arrays.equals(text, decryptText));
+        } catch (ExecutionException | InterruptedException e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
-
-//1 2 3 4 5 6 7 8
-//  2 3 4 5 6 7 8

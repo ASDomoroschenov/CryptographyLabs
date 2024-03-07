@@ -1,10 +1,10 @@
 package ru.mai.encryption.encryption_impl.DES;
 
-import ru.mai.encryption.encryption_interface.Encryption;
+import ru.mai.encryption.encryption_interface.IEncryption;
 import ru.mai.utils.BitsUtil;
 import ru.mai.utils.BytesUtil;
 
-public class DESEncryption implements Encryption {
+public class DESEncryption implements IEncryption {
     private static final int[] EXTENSION_BLOCK_PERMUTATION = {
             32, 1, 2, 3, 4, 5,
             4, 5, 6, 7, 8, 9,

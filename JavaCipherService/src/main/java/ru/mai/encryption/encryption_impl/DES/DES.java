@@ -1,12 +1,12 @@
 package ru.mai.encryption.encryption_impl.DES;
 
 import lombok.AllArgsConstructor;
-import ru.mai.encryption.encryption_interface.FeistelNetwork;
-import ru.mai.encryption.encryption_interface.SymmetricCipher;
+import ru.mai.encryption.encryption_interface.IFeistelNetwork;
+import ru.mai.encryption.encryption_interface.ISymmetricCipher;
 import ru.mai.utils.BytesUtil;
 
 @AllArgsConstructor
-public class DES implements SymmetricCipher {
+public class DES implements ISymmetricCipher {
     private final byte[] key;
 
     private static final int NUMBER_OF_ROUNDS = 16;
@@ -30,7 +30,7 @@ public class DES implements SymmetricCipher {
 
     @Override
     public byte[] encrypt(byte[] block) {
-        FeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESRoundKeyGenerator(), new DESEncryption());
+        IFeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESRoundKeyGenerator(), new DESEncryption());
         block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
         block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
         return BytesUtil.permutation(block, FINAL_PERMUTATION);
@@ -38,7 +38,7 @@ public class DES implements SymmetricCipher {
 
     @Override
     public byte[] decrypt(byte[] block) {
-        FeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESReverseRoundKeyGenerator(), new DESEncryption());
+        IFeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESReverseRoundKeyGenerator(), new DESEncryption());
         block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
         block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
         return BytesUtil.permutation(block, FINAL_PERMUTATION);

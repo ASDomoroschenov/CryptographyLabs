@@ -1,8 +1,8 @@
 package ru.mai.encryption.encryption_impl.padding;
 
-import ru.mai.encryption.encryption_interface.Padding;
+import ru.mai.encryption.encryption_interface.IPadding;
 
-public class PKCS7Padding implements Padding {
+public class PKCS7Padding implements IPadding {
     @Override
     public byte[] addPAdding(byte[] bytes, int textBlockSize) {
         byte valuePadding = (byte) (textBlockSize - bytes.length % textBlockSize);

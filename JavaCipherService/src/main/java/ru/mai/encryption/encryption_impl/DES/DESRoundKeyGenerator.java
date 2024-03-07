@@ -1,10 +1,10 @@
 package ru.mai.encryption.encryption_impl.DES;
 
-import ru.mai.encryption.encryption_interface.RoundKeyGenerator;
+import ru.mai.encryption.encryption_interface.IRoundKeyGenerator;
 import ru.mai.utils.BitsUtil;
 import ru.mai.utils.BytesUtil;
 
-public class DESRoundKeyGenerator implements RoundKeyGenerator {
+public class DESRoundKeyGenerator implements IRoundKeyGenerator {
     private static final int SIZE_KEY_BITS = 56;
 
     private static final int[] COMPRESS_KEY_PERMUTATION = {
