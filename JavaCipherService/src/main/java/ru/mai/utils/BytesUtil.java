@@ -1,10 +1,4 @@
 package ru.mai.utils;
-
-<<<<<<< HEAD
-=======
-import java.util.Arrays;
-
->>>>>>> origin/lab1/task2
 public class BytesUtil {
     public static byte[] cycleLeftShift(byte[] bytes, int bits, int k) {
         long number = bytesToLong(bytes);
@@ -102,8 +96,4 @@ public class BytesUtil {
 
         return null;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/lab1/task2
