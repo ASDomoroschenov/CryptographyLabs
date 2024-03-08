@@ -1,9 +1,7 @@
 package ru.mai.encryption.encryption_impl.DES;
 
 import lombok.AllArgsConstructor;
-import ru.mai.encryption.encryption_interface.Encryption;
 import ru.mai.encryption.encryption_interface.FeistelNetwork;
-import ru.mai.encryption.encryption_interface.RoundKeyGenerator;
 import ru.mai.utils.BytesUtil;
 
 @AllArgsConstructor
