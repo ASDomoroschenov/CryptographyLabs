@@ -34,7 +34,7 @@ public class ThreadTaskCTR implements IThreadTask {
 
         for (int i = 0; i < countBlocks; i++) {
             System.arraycopy(text, indexBegin + i * textBlockSize, textBlock, 0, textBlockSize);
-            byte[] cipherBlockText = BytesUtil.xor(textBlock, counterBlocks[(indexBegin + i * textBlockSize) / textBlockSize]);
+            byte[] cipherBlockText = BytesUtil.xor(textBlock, cipher.encrypt(counterBlocks[(indexBegin + i * textBlockSize) / textBlockSize]));
             System.arraycopy(cipherBlockText, 0, result, i * textBlockSize, textBlockSize);
         }
 
