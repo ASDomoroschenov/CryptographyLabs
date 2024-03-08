@@ -1,7 +1,5 @@
 package ru.mai.encryption.encryption_service;
 
-<<<<<<< HEAD
-=======
 import ru.mai.encryption.encryption_impl.DES.DES;
 import ru.mai.encryption.encryption_impl.mode.CBC.CBCMode;
 import ru.mai.encryption.encryption_impl.mode.CFB.CFBMode;
@@ -9,7 +7,7 @@ import ru.mai.encryption.encryption_impl.mode.CTR.CTRMode;
 import ru.mai.encryption.encryption_impl.mode.ECB.ECBMode;
 import ru.mai.encryption.encryption_impl.mode.OFB.OFBMode;
 import ru.mai.encryption.encryption_impl.mode.PCBC.PCBCMode;
-import ru.mai.encryption.encryption_impl.mode.random_delta.RandomDeltaMode;
+import ru.mai.encryption.encryption_impl.mode.RD.RDMode;
 import ru.mai.encryption.encryption_impl.padding.ANSIX923Padding;
 import ru.mai.encryption.encryption_impl.padding.ISO10126Padding;
 import ru.mai.encryption.encryption_impl.padding.PKCS7Padding;
@@ -20,7 +18,6 @@ import ru.mai.encryption.encryption_interface.ICipher;
 
 import java.util.concurrent.ExecutionException;
 
->>>>>>> lab1/task2
 public class EncryptionService {
     public enum EncryptionMode {
         ECB,
@@ -29,7 +26,7 @@ public class EncryptionService {
         CFB,
         OFB,
         CTR,
-        RANDOM_DELTA
+        RD
     }
 
     public enum StuffingMode {
@@ -44,32 +41,6 @@ public class EncryptionService {
     }
 
     private byte[] key;
-    private CipherAlgorithm cipherAlgorithm;
-    private EncryptionMode encryptionMode;
-    private StuffingMode stuffingMode;
-    private byte[] initialVector;
-
-    public EncryptionService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, Object ... additionalArgs) {
-        this.key = key;
-        this.cipherAlgorithm = cipherAlgorithm;
-        this.encryptionMode = encryptionMode;
-        this.stuffingMode = stuffingMode;
-        initialVector = null;
-    }
-
-    public EncryptionService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, byte[] initialVector, Object ... additionalArgs) {
-        this.key = key;
-        this.cipherAlgorithm = cipherAlgorithm;
-        this.encryptionMode = encryptionMode;
-        this.stuffingMode = stuffingMode;
-        this.initialVector = initialVector;
-    }
-
-    public byte[] encrypt(byte[] text) {
-        return null;
-    }
-
-=======
     private ICipher cipher;
     private ICipherMode cipherMode;
     private IPadding padding;
@@ -121,8 +92,8 @@ public class EncryptionService {
             case CTR -> {
                 return new CTRMode(cipher, initialVector);
             }
-            case RANDOM_DELTA -> {
-                return new RandomDeltaMode(cipher);
+            case RD -> {
+                return new RDMode(cipher);
             }
         }
 
@@ -152,25 +123,15 @@ public class EncryptionService {
         return cipherMode.encrypt(padding.addPAdding(text, cipher.getTextBlockSize()));
     }
 
->>>>>>> lab1/task2
     public String encrypt(String inputFilePath) {
         return null;
     }
 
-<<<<<<< HEAD
     public byte[] decipher(byte[] text) {
         return null;
-=======
-    public byte[] decipher(byte[] text) throws ExecutionException, InterruptedException {
-        return padding.removePadding(cipherMode.decrypt(text));
->>>>>>> lab1/task2
     }
 
     public String decipher(String inputFilePath) {
         return null;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> lab1/task2

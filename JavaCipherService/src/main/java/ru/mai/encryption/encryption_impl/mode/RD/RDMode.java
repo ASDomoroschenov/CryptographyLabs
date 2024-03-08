@@ -1,11 +1,11 @@
-package ru.mai.encryption.encryption_impl.mode.random_delta;
+package ru.mai.encryption.encryption_impl.mode.RD;
 
 import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_interface.ICipherMode;
 import ru.mai.encryption.encryption_interface.ICipher;
 
 @AllArgsConstructor
-public class RandomDeltaMode implements ICipherMode {
+public class RDMode implements ICipherMode {
     ICipher cipher;
 
     @Override
