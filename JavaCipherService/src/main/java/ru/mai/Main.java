@@ -1,10 +1,10 @@
 package ru.mai;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.mai.encryption.encryption_service.EncryptionService;
-import ru.mai.encryption.encryption_service.EncryptionService.CipherAlgorithm;
-import ru.mai.encryption.encryption_service.EncryptionService.StuffingMode;
-import ru.mai.encryption.encryption_service.EncryptionService.EncryptionMode;
+import ru.mai.cipher.cipher_service.CipherService;
+import ru.mai.cipher.cipher_service.CipherService.CipherAlgorithm;
+import ru.mai.cipher.cipher_service.CipherService.StuffingMode;
+import ru.mai.cipher.cipher_service.CipherService.EncryptionMode;
 
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
@@ -16,7 +16,7 @@ public class Main {
         byte[] text1 = {1, 1, 1, 1, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1};
         byte[] text2 = {1, 1, 1, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1};
 
-        EncryptionService service = new EncryptionService(
+        CipherService service = new CipherService(
                 key,
                 CipherAlgorithm.DES,
                 EncryptionMode.ECB,
