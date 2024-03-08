@@ -2,19 +2,19 @@ package ru.mai.encryption.encryption_impl.mode.CTR;
 
 import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_interface.ICipherMode;
-import ru.mai.encryption.encryption_interface.ISymmetricCipher;
+import ru.mai.encryption.encryption_interface.ICipher;
 
 @AllArgsConstructor
 public class CTRMode implements ICipherMode {
-    ISymmetricCipher cipher;
+    ICipher cipher;
 
     @Override
-    public byte[] encryptText(byte[] text) {
+    public byte[] encrypt(byte[] text) {
         return new byte[0];
     }
 
     @Override
-    public byte[] decryptText(byte[] text) {
+    public byte[] decrypt(byte[] text) {
         return new byte[0];
     }
 }

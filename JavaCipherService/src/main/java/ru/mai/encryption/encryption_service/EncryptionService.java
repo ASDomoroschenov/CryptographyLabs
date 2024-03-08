@@ -14,7 +14,7 @@ import ru.mai.encryption.encryption_impl.padding.PKCS7Padding;
 import ru.mai.encryption.encryption_impl.padding.ZerosPadding;
 import ru.mai.encryption.encryption_interface.ICipherMode;
 import ru.mai.encryption.encryption_interface.IPadding;
-import ru.mai.encryption.encryption_interface.ISymmetricCipher;
+import ru.mai.encryption.encryption_interface.ICipher;
 
 import java.util.concurrent.ExecutionException;
 
@@ -41,7 +41,7 @@ public class EncryptionService {
     }
 
     private byte[] key;
-    private ISymmetricCipher symmetricCipher;
+    private ICipher symmetricCipher;
     private ICipherMode cipherMode;
     private IPadding padding;
     private byte[] initialVector;
@@ -62,7 +62,7 @@ public class EncryptionService {
         this.padding = getStuffingMode(stuffingMode);
     }
 
-    public ISymmetricCipher getCipherAlgorithm(CipherAlgorithm cipherAlgorithm) {
+    public ICipher getCipherAlgorithm(CipherAlgorithm cipherAlgorithm) {
         switch (cipherAlgorithm) {
             case DES -> {
                 return new DES(key);
@@ -81,13 +81,13 @@ public class EncryptionService {
                 return new CBCMode(symmetricCipher, initialVector);
             }
             case PCBC -> {
-                return new PCBCMode(symmetricCipher);
+                return new PCBCMode(symmetricCipher, initialVector);
             }
             case CFB -> {
                 return new CFBMode(symmetricCipher, initialVector);
             }
             case OFB -> {
-                return new OFBMode(symmetricCipher);
+                return new OFBMode(symmetricCipher, initialVector);
             }
             case CTR -> {
                 return new CTRMode(symmetricCipher);
@@ -120,7 +120,7 @@ public class EncryptionService {
     }
 
     public byte[] encrypt(byte[] text) throws ExecutionException, InterruptedException {
-        return cipherMode.encryptText(padding.addPAdding(text, symmetricCipher.getTextBlockSize()));
+        return cipherMode.encrypt(padding.addPAdding(text, symmetricCipher.getTextBlockSize()));
     }
 
     public String encrypt(String inputFilePath) {
@@ -128,7 +128,7 @@ public class EncryptionService {
     }
 
     public byte[] decipher(byte[] text) throws ExecutionException, InterruptedException {
-        return padding.removePadding(cipherMode.decryptText(text));
+        return padding.removePadding(cipherMode.decrypt(text));
     }
 
     public String decipher(String inputFilePath) {

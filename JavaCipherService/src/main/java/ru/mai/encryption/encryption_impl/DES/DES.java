@@ -2,11 +2,11 @@ package ru.mai.encryption.encryption_impl.DES;
 
 import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_interface.IFeistelNetwork;
-import ru.mai.encryption.encryption_interface.ISymmetricCipher;
+import ru.mai.encryption.encryption_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
 @AllArgsConstructor
-public class DES implements ISymmetricCipher {
+public class DES implements ICipher {
     private final byte[] key;
 
     private static final int NUMBER_OF_ROUNDS = 16;

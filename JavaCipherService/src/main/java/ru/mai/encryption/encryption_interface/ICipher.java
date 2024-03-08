@@ -1,6 +1,6 @@
 package ru.mai.encryption.encryption_interface;
 
-public interface ISymmetricCipher {
+public interface ICipher {
     byte[] encrypt(byte[] bytes);
 
     byte[] decrypt(byte[] bytes);

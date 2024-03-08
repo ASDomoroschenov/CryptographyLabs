@@ -3,12 +3,12 @@ package ru.mai.encryption.encryption_impl.mode.CFB;
 import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_impl.PairMode;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_interface.IThreadTask;
-import ru.mai.encryption.encryption_interface.ISymmetricCipher;
+import ru.mai.encryption.encryption_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
 @AllArgsConstructor
 public class ThreadTaskDecryptCFB implements IThreadTask {
-    private ISymmetricCipher cipher;
+    private ICipher cipher;
     private byte[] initialVector;
 
     @Override

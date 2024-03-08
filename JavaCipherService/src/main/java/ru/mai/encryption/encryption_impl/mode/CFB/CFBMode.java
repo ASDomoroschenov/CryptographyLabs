@@ -1,24 +1,21 @@
 package ru.mai.encryption.encryption_impl.mode.CFB;
 
+import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_impl.CollectTextMode;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_impl.ThreadCipher;
 import ru.mai.encryption.encryption_interface.ICipherMode;
-import ru.mai.encryption.encryption_interface.ISymmetricCipher;
+import ru.mai.encryption.encryption_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
 import java.util.concurrent.ExecutionException;
 
+@AllArgsConstructor
 public class CFBMode implements ICipherMode {
-    ISymmetricCipher cipher;
+    ICipher cipher;
     byte[] initialVector;
 
-    public CFBMode(ISymmetricCipher cipher, byte[] initialVector) {
-        this.cipher = cipher;
-        this.initialVector = initialVector;
-    }
-
     @Override
-    public byte[] encryptText(byte[] text) {
+    public byte[] encrypt(byte[] text) {
         int textBlockSize = cipher.getTextBlockSize();
         byte[] cipherBlock = initialVector;
         byte[] result = new byte[text.length];
@@ -35,7 +32,7 @@ public class CFBMode implements ICipherMode {
     }
 
     @Override
-    public byte[] decryptText(byte[] text) throws ExecutionException, InterruptedException {
+    public byte[] decrypt(byte[] text) throws ExecutionException, InterruptedException {
         return new ThreadCipher(
                 cipher.getTextBlockSize(),
                 new ThreadTaskDecryptCFB(cipher, initialVector),

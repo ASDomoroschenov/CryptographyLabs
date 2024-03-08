@@ -4,16 +4,16 @@ import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_impl.CollectTextMode;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_impl.ThreadCipher;
 import ru.mai.encryption.encryption_interface.ICipherMode;
-import ru.mai.encryption.encryption_interface.ISymmetricCipher;
+import ru.mai.encryption.encryption_interface.ICipher;
 
 import java.util.concurrent.ExecutionException;
 
 @AllArgsConstructor
 public class ECBMode implements ICipherMode {
-    ISymmetricCipher cipher;
+    ICipher cipher;
 
     @Override
-    public byte[] encryptText(byte[] text) throws ExecutionException, InterruptedException {
+    public byte[] encrypt(byte[] text) throws ExecutionException, InterruptedException {
         return new ThreadCipher(
                 cipher.getTextBlockSize(),
                 new ThreadTaskEncryptECB(cipher),
@@ -21,7 +21,7 @@ public class ECBMode implements ICipherMode {
     }
 
     @Override
-    public byte[] decryptText(byte[] text) throws ExecutionException, InterruptedException {
+    public byte[] decrypt(byte[] text) throws ExecutionException, InterruptedException {
         return new ThreadCipher(
                 cipher.getTextBlockSize(),
                 new ThreadTaskDecryptECB(cipher),

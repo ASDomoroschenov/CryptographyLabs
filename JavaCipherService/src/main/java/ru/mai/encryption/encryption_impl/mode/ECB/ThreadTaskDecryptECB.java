@@ -3,11 +3,11 @@ package ru.mai.encryption.encryption_impl.mode.ECB;
 import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_impl.PairMode;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_interface.IThreadTask;
-import ru.mai.encryption.encryption_interface.ISymmetricCipher;
+import ru.mai.encryption.encryption_interface.ICipher;
 
 @AllArgsConstructor
 public class ThreadTaskDecryptECB implements IThreadTask {
-    private ISymmetricCipher cipher;
+    private ICipher cipher;
 
     @Override
     public PairMode apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
