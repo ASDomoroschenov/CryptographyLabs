@@ -10,8 +10,8 @@ import java.util.concurrent.ExecutionException;
 
 @AllArgsConstructor
 public class OFBMode implements ICipherMode {
-    ICipher cipher;
-    byte[] initialVector;
+    private ICipher cipher;
+    private byte[] initialVector;
 
     @Override
     public byte[] encrypt(byte[] text) throws ExecutionException, InterruptedException {

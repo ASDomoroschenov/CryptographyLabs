@@ -9,8 +9,8 @@ import java.util.Arrays;
 
 @AllArgsConstructor
 public class PCBCMode implements ICipherMode {
-    ICipher cipher;
-    byte[] initialVector;
+    private ICipher cipher;
+    private byte[] initialVector;
 
     @Override
     public byte[] encrypt(byte[] text) {

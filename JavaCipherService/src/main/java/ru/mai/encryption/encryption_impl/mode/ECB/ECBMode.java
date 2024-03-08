@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 @AllArgsConstructor
 public class ECBMode implements ICipherMode {
-    ICipher cipher;
+    private ICipher cipher;
 
     @Override
     public byte[] encrypt(byte[] text) throws ExecutionException, InterruptedException {

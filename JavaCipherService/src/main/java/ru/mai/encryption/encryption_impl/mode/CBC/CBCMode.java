@@ -12,8 +12,8 @@ import java.util.concurrent.ExecutionException;
 
 @AllArgsConstructor
 public class CBCMode implements ICipherMode {
-    ICipher cipher;
-    byte[] initialVector;
+    private ICipher cipher;
+    private byte[] initialVector;
 
     @Override
     public byte[] encrypt(byte[] text) {

@@ -41,14 +41,14 @@ public class EncryptionService {
     }
 
     private byte[] key;
-    private ICipher symmetricCipher;
+    private ICipher cipher;
     private ICipherMode cipherMode;
     private IPadding padding;
     private byte[] initialVector;
 
     public EncryptionService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, Object... additionalArgs) {
         this.key = key;
-        this.symmetricCipher = getCipherAlgorithm(cipherAlgorithm);
+        this.cipher = getCipherAlgorithm(cipherAlgorithm);
         this.cipherMode = getEncryptionMode(encryptionMode);
         this.padding = getStuffingMode(stuffingMode);
         initialVector = null;
@@ -57,7 +57,7 @@ public class EncryptionService {
     public EncryptionService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, byte[] initialVector, Object... additionalArgs) {
         this.key = key;
         this.initialVector = initialVector;
-        this.symmetricCipher = getCipherAlgorithm(cipherAlgorithm);
+        this.cipher = getCipherAlgorithm(cipherAlgorithm);
         this.cipherMode = getEncryptionMode(encryptionMode);
         this.padding = getStuffingMode(stuffingMode);
     }
@@ -75,25 +75,25 @@ public class EncryptionService {
     public ICipherMode getEncryptionMode(EncryptionMode encryptionMode) {
         switch (encryptionMode) {
             case ECB -> {
-                return new ECBMode(symmetricCipher);
+                return new ECBMode(cipher);
             }
             case CBC -> {
-                return new CBCMode(symmetricCipher, initialVector);
+                return new CBCMode(cipher, initialVector);
             }
             case PCBC -> {
-                return new PCBCMode(symmetricCipher, initialVector);
+                return new PCBCMode(cipher, initialVector);
             }
             case CFB -> {
-                return new CFBMode(symmetricCipher, initialVector);
+                return new CFBMode(cipher, initialVector);
             }
             case OFB -> {
-                return new OFBMode(symmetricCipher, initialVector);
+                return new OFBMode(cipher, initialVector);
             }
             case CTR -> {
-                return new CTRMode(symmetricCipher);
+                return new CTRMode(cipher, initialVector);
             }
             case RANDOM_DELTA -> {
-                return new RandomDeltaMode(symmetricCipher);
+                return new RandomDeltaMode(cipher);
             }
         }
 
@@ -120,7 +120,7 @@ public class EncryptionService {
     }
 
     public byte[] encrypt(byte[] text) throws ExecutionException, InterruptedException {
-        return cipherMode.encrypt(padding.addPAdding(text, symmetricCipher.getTextBlockSize()));
+        return cipherMode.encrypt(padding.addPAdding(text, cipher.getTextBlockSize()));
     }
 
     public String encrypt(String inputFilePath) {

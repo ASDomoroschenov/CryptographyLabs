@@ -6,13 +6,9 @@ import ru.mai.encryption.encryption_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
 public class ThreadTaskOFB implements IThreadTask {
-    ICipher cipher;
-    byte[] initialVector;
-    byte[][] keyBlocks;
+    private final byte[][] keyBlocks;
 
     public ThreadTaskOFB(ICipher cipher, byte[] text, byte[] initialVector) {
-        this.cipher = cipher;
-        this.initialVector = initialVector;
 
         keyBlocks = new byte[text.length / cipher.getTextBlockSize()][];
         byte[] keyBlock = initialVector;
