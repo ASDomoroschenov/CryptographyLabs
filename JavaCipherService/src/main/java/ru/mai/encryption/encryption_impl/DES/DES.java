@@ -30,18 +30,12 @@ public class DES implements ICipher {
 
     @Override
     public byte[] encrypt(byte[] block) {
-        IFeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESRoundKeyGenerator(), new DESEncryption());
-        block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
-        block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
-        return BytesUtil.permutation(block, FINAL_PERMUTATION);
+        return null;
     }
 
     @Override
     public byte[] decrypt(byte[] block) {
-        IFeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESReverseRoundKeyGenerator(), new DESEncryption());
-        block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
-        block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
-        return BytesUtil.permutation(block, FINAL_PERMUTATION);
+        return null;
     }
 
     @Override
