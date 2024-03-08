@@ -1,4 +1,4 @@
-package ru.mai.encryption.encryption_impl.DES;
+package ru.mai.encryption.encryption_impl.DES.feistel_network;
 
 import lombok.AllArgsConstructor;
 import ru.mai.encryption.encryption_interface.IEncryption;

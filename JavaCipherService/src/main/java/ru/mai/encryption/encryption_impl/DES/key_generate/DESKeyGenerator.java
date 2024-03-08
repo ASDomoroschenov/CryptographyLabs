@@ -1,10 +1,11 @@
-package ru.mai.encryption.encryption_impl.DES;
+package ru.mai.encryption.encryption_impl.DES.key_generate;
 
-import ru.mai.encryption.encryption_interface.IRoundKeyGenerator;
+import lombok.Getter;
 import ru.mai.utils.BitsUtil;
 import ru.mai.utils.BytesUtil;
 
-public class DESReverseRoundKeyGenerator implements IRoundKeyGenerator {
+@Getter
+public class DESKeyGenerator {
     private static final int SIZE_KEY_BITS = 56;
 
     private static final int[] COMPRESS_KEY_PERMUTATION = {
@@ -17,8 +18,9 @@ public class DESReverseRoundKeyGenerator implements IRoundKeyGenerator {
 
     private static final int NUM_ROUNDS = 16;
 
-    @Override
-    public byte[][] generate(byte[] keyBytes) {
+    private final byte[][] roundKeys;
+
+    public DESKeyGenerator(byte[] keyBytes) {
         long key = BytesUtil.bytesToLong(keyBytes);
         long leftPartKey = key >>> (Long.SIZE - SIZE_KEY_BITS / 2);
         long rightPartKey = (key << (SIZE_KEY_BITS / 2)) >>> (Long.SIZE - SIZE_KEY_BITS / 2);
@@ -28,16 +30,14 @@ public class DESReverseRoundKeyGenerator implements IRoundKeyGenerator {
         long twoShiftRightPartKey = BitsUtil.cyclicLeftShift(rightPartKey, SIZE_KEY_BITS / 2, 2);
         byte[] oneShiftKey = BytesUtil.permutation(BytesUtil.longToBytes((oneShiftLeftPartKey << SIZE_KEY_BITS / 2) | oneShiftRightPartKey, SIZE_KEY_BITS / Byte.SIZE), COMPRESS_KEY_PERMUTATION);
         byte[] towShiftKey = BytesUtil.permutation(BytesUtil.longToBytes((twoShiftLeftPartKey << SIZE_KEY_BITS / 2) | twoShiftRightPartKey, SIZE_KEY_BITS / Byte.SIZE), COMPRESS_KEY_PERMUTATION);
-        byte[][] result = new byte[NUM_ROUNDS][];
+        roundKeys = new byte[NUM_ROUNDS][];
 
         for (int i = 0; i < NUM_ROUNDS; i++) {
-            if (SHIFT_ROUND[NUM_ROUNDS - i - 1] == 1) {
-                result[i] = oneShiftKey;
+            if (SHIFT_ROUND[i] == 1) {
+                roundKeys[i] = oneShiftKey;
             } else {
-                result[i] = towShiftKey;
+                roundKeys[i] = towShiftKey;
             }
         }
-
-        return result;
     }
 }

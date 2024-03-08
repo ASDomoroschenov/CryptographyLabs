@@ -5,8 +5,6 @@ import ru.mai.encryption.encryption_impl.mode.utils.utils_interface.IThreadTask;
 import ru.mai.encryption.encryption_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
-import java.util.Arrays;
-
 public class ThreadTaskDecryptRD implements IThreadTask {
     ICipher cipher;
     byte[][] counterBlocks;

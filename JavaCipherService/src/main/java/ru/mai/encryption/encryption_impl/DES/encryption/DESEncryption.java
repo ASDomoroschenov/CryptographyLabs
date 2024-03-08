@@ -1,4 +1,4 @@
-package ru.mai.encryption.encryption_impl.DES;
+package ru.mai.encryption.encryption_impl.DES.encryption;
 
 import ru.mai.encryption.encryption_interface.IEncryption;
 import ru.mai.utils.BitsUtil;

@@ -1,13 +1,17 @@
 package ru.mai.encryption.encryption_impl.DES;
 
-import lombok.AllArgsConstructor;
-import ru.mai.encryption.encryption_interface.IFeistelNetwork;
+import ru.mai.encryption.encryption_impl.DES.encryption.DESEncryption;
+import ru.mai.encryption.encryption_impl.DES.feistel_network.DESFeistelNetwork;
+import ru.mai.encryption.encryption_impl.DES.key_generate.DESDecryptKeyGenerator;
+import ru.mai.encryption.encryption_impl.DES.key_generate.DESEncryptKeyGenerator;
+import ru.mai.encryption.encryption_impl.DES.key_generate.DESKeyGenerator;
 import ru.mai.encryption.encryption_interface.ICipher;
+import ru.mai.encryption.encryption_interface.IFeistelNetwork;
 import ru.mai.utils.BytesUtil;
 
-@AllArgsConstructor
 public class DES implements ICipher {
     private final byte[] key;
+    private final DESKeyGenerator keyGenerator;
 
     private static final int NUMBER_OF_ROUNDS = 16;
 
@@ -27,10 +31,14 @@ public class DES implements ICipher {
             34, 2, 42, 10, 50, 18, 58, 26, 33, 1, 41, 9, 49, 17, 57, 25
     };
 
+    public DES(byte[] key) {
+        this.key = key;
+        keyGenerator = new DESKeyGenerator(key);
+    }
 
     @Override
     public byte[] encrypt(byte[] block) {
-        IFeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESRoundKeyGenerator(), new DESEncryption());
+        IFeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESEncryptKeyGenerator(keyGenerator), new DESEncryption());
         block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
         block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
         return BytesUtil.permutation(block, FINAL_PERMUTATION);
@@ -38,7 +46,7 @@ public class DES implements ICipher {
 
     @Override
     public byte[] decrypt(byte[] block) {
-        IFeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESReverseRoundKeyGenerator(), new DESEncryption());
+        IFeistelNetwork feistelNetwork = new DESFeistelNetwork(new DESDecryptKeyGenerator(keyGenerator), new DESEncryption());
         block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
         block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
         return BytesUtil.permutation(block, FINAL_PERMUTATION);

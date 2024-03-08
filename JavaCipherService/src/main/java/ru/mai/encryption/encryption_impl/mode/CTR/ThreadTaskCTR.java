@@ -6,13 +6,11 @@ import ru.mai.encryption.encryption_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
 public class ThreadTaskCTR implements IThreadTask {
-    private ICipher cipher;
-    private byte[][] counterBlocks;
-    private byte[] initialVector;
+    private final ICipher cipher;
+    private final byte[][] counterBlocks;
 
     public ThreadTaskCTR(ICipher cipher, byte[] text, byte[] initialVector) {
         this.cipher = cipher;
-        this.initialVector = initialVector;
         counterBlocks = new byte[text.length / cipher.getTextBlockSize()][cipher.getTextBlockSize()];
         long counter = BytesUtil.bytesToLong(initialVector);
 
