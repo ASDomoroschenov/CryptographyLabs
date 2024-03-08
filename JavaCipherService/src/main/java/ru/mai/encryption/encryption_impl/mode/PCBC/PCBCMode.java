@@ -1,11 +1,9 @@
 package ru.mai.encryption.encryption_impl.mode.PCBC;
 
 import lombok.AllArgsConstructor;
-import ru.mai.encryption.encryption_interface.ICipherMode;
 import ru.mai.encryption.encryption_interface.ICipher;
+import ru.mai.encryption.encryption_interface.ICipherMode;
 import ru.mai.utils.BytesUtil;
-
-import java.util.Arrays;
 
 @AllArgsConstructor
 public class PCBCMode implements ICipherMode {

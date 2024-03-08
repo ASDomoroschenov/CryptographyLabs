@@ -1,29 +1,28 @@
-package ru.mai.encryption.encryption_impl.mode.CTR;
+package ru.mai.encryption.encryption_impl.mode.RD;
 
 import ru.mai.encryption.encryption_impl.mode.utils.utils_impl.PairMode;
 import ru.mai.encryption.encryption_impl.mode.utils.utils_interface.IThreadTask;
 import ru.mai.encryption.encryption_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
-public class ThreadTaskCTR implements IThreadTask {
-    private final ICipher cipher;
-    private final byte[][] counterBlocks;
+public class ThreadTaskDecryptRD implements IThreadTask {
+    ICipher cipher;
+    byte[][] counterBlocks;
 
-    public ThreadTaskCTR(ICipher cipher, byte[] text, byte[] initialVector) {
+    public ThreadTaskDecryptRD(ICipher cipher, byte[] text, byte[] initialVector) {
         this.cipher = cipher;
         counterBlocks = new byte[text.length / cipher.getTextBlockSize()][cipher.getTextBlockSize()];
-        long counter = BytesUtil.bytesToLong(initialVector);
+        long delta = BytesUtil.bytesToLong(initialVector) << Integer.SIZE >> Integer.SIZE;
+        long counter = BytesUtil.bytesToLong(cipher.encrypt(initialVector));
 
         for (int i = 0; i < text.length / cipher.getTextBlockSize(); i++) {
             counterBlocks[i] = BytesUtil.longToBytes(counter, Long.BYTES);
-            counter = getNextCounter(counter);
+            counter = getNextCounter(counter, delta);
         }
     }
 
-    private long getNextCounter(long counter) {
-        int rightPartCounter = ((int) ((counter << Integer.SIZE) >> Integer.SIZE)) + 1;
-        long leftPartCounter = counter >> Integer.SIZE;
-        return leftPartCounter << Integer.SIZE | rightPartCounter;
+    private long getNextCounter(long counter, long delta) {
+        return counter + delta;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class ThreadTaskCTR implements IThreadTask {
 
         for (int i = 0; i < countBlocks; i++) {
             System.arraycopy(text, indexBegin + i * textBlockSize, textBlock, 0, textBlockSize);
-            byte[] cipherBlockText = BytesUtil.xor(textBlock, cipher.encrypt(counterBlocks[(indexBegin + i * textBlockSize) / textBlockSize]));
+            byte[] cipherBlockText = BytesUtil.xor(cipher.decrypt(textBlock), counterBlocks[(indexBegin + i * textBlockSize) / textBlockSize]);
             System.arraycopy(cipherBlockText, 0, result, i * textBlockSize, textBlockSize);
         }
 

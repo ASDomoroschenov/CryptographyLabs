@@ -7,7 +7,7 @@ import ru.mai.encryption.encryption_impl.mode.CTR.CTRMode;
 import ru.mai.encryption.encryption_impl.mode.ECB.ECBMode;
 import ru.mai.encryption.encryption_impl.mode.OFB.OFBMode;
 import ru.mai.encryption.encryption_impl.mode.PCBC.PCBCMode;
-import ru.mai.encryption.encryption_impl.mode.random_delta.RandomDeltaMode;
+import ru.mai.encryption.encryption_impl.mode.RD.RDMode;
 import ru.mai.encryption.encryption_impl.padding.ANSIX923Padding;
 import ru.mai.encryption.encryption_impl.padding.ISO10126Padding;
 import ru.mai.encryption.encryption_impl.padding.PKCS7Padding;
@@ -16,6 +16,7 @@ import ru.mai.encryption.encryption_interface.ICipherMode;
 import ru.mai.encryption.encryption_interface.IPadding;
 import ru.mai.encryption.encryption_interface.ICipher;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 public class EncryptionService {
@@ -26,7 +27,7 @@ public class EncryptionService {
         CFB,
         OFB,
         CTR,
-        RANDOM_DELTA
+        RD
     }
 
     public enum StuffingMode {
@@ -92,8 +93,8 @@ public class EncryptionService {
             case CTR -> {
                 return new CTRMode(cipher, initialVector);
             }
-            case RANDOM_DELTA -> {
-                return new RandomDeltaMode(cipher);
+            case RD -> {
+                return new RDMode(cipher, initialVector);
             }
         }
 
