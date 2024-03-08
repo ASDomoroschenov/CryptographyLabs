@@ -1,10 +1,10 @@
 package ru.mai;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.mai.encryption.cipher_service.CipherService;
-import ru.mai.encryption.cipher_service.CipherService.CipherAlgorithm;
-import ru.mai.encryption.cipher_service.CipherService.EncryptionMode;
-import ru.mai.encryption.cipher_service.CipherService.StuffingMode;
+import ru.mai.cipher.cipher_service.CipherService;
+import ru.mai.cipher.cipher_service.CipherService.CipherAlgorithm;
+import ru.mai.cipher.cipher_service.CipherService.EncryptionMode;
+import ru.mai.cipher.cipher_service.CipherService.StuffingMode;
 
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
