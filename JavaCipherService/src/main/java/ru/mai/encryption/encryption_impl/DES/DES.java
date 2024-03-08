@@ -1,11 +1,9 @@
 package ru.mai.encryption.encryption_impl.DES;
 
-import ru.mai.encryption.encryption_impl.DES.key_generate.DESKeyGenerator;
 import ru.mai.encryption.encryption_interface.ICipher;
 
 public class DES implements ICipher {
     private final byte[] key;
-    private final DESKeyGenerator keyGenerator;
 
     private static final int NUMBER_OF_ROUNDS = 16;
 
@@ -27,7 +25,6 @@ public class DES implements ICipher {
 
     public DES(byte[] key) {
         this.key = key;
-        keyGenerator = new DESKeyGenerator(key);
     }
 
     @Override
