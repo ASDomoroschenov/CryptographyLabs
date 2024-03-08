@@ -16,6 +16,7 @@ import ru.mai.encryption.encryption_interface.ICipherMode;
 import ru.mai.encryption.encryption_interface.IPadding;
 import ru.mai.encryption.encryption_interface.ICipher;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 public class EncryptionService {
@@ -93,7 +94,7 @@ public class EncryptionService {
                 return new CTRMode(cipher, initialVector);
             }
             case RD -> {
-                return new RDMode(cipher);
+                return new RDMode(cipher, initialVector);
             }
         }
 
