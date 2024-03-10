@@ -15,6 +15,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) throws IOException {
         byte[] key = {1, 2, 3, 4, 5, 6, 7};
+        byte[] text = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         CipherService service = new CipherService(
                 key,
@@ -23,13 +24,9 @@ public class Main {
                 StuffingMode.ANSI_X_923,
                 new byte[]{1, 2, 3, 4, 5, 6, 7, 8});
 
-        String source = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/tests/input/image.jpg";
-        String encrypt = service.encrypt(source);
-        String decrypt = service.decrypt(encrypt);
+        byte[] encrypt = service.encrypt(text);
+        byte[] decrypt = service.decrypt(encrypt);
 
-        byte[] sourceBytes = Files.readAllBytes(Paths.get(source));
-        byte[] decryptBytes = Files.readAllBytes(Paths.get(decrypt));
-
-        System.out.println(Arrays.equals(sourceBytes, decryptBytes));
+        System.out.println(Arrays.equals(decrypt, text));
     }
 }
