@@ -1,22 +1,28 @@
 package ru.mai.cipher.cipher_impl.mode.CBC;
 
 import lombok.AllArgsConstructor;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectTextMode;
+import lombok.extern.slf4j.Slf4j;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectText;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.ThreadCipher;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadCipher;
-import ru.mai.cipher.cipher_interface.ICipherMode;
 import ru.mai.cipher.cipher_interface.ICipher;
+import ru.mai.cipher.cipher_interface.ICipherMode;
 import ru.mai.utils.BytesUtil;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
+@Slf4j
 @AllArgsConstructor
 public class CBCMode implements ICipherMode {
     private ICipher cipher;
     private byte[] initialVector;
 
     @Override
-    public byte[] encrypt(byte[] text) {
+    public byte[] encrypt(byte[] text) throws IllegalArgumentException {
+        if (text == null || text.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+
         int textBlockSize = cipher.getTextBlockSize();
         byte[] cipherBlock = initialVector;
         byte[] result = new byte[text.length];
@@ -33,12 +39,14 @@ public class CBCMode implements ICipherMode {
     }
 
     @Override
-    public byte[] decrypt(byte[] text) throws ExecutionException, InterruptedException {
-        IThreadCipher threadCipher = new ThreadCipher(
+    public byte[] decrypt(byte[] text) throws IllegalArgumentException {
+        if (text == null || text.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+
+        return new ThreadCipher(
                 cipher.getTextBlockSize(),
                 new ThreadTaskDecryptCBC(cipher, initialVector),
-                new CollectTextMode());
-
-        return threadCipher.cipher(text);
+                new CollectText()).cipher(text);
     }
 }

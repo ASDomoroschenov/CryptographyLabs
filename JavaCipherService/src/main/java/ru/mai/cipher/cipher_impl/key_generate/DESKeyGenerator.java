@@ -20,7 +20,11 @@ public class DESKeyGenerator {
 
     private final byte[][] roundKeys;
 
-    public DESKeyGenerator(byte[] keyBytes) {
+    public DESKeyGenerator(byte[] keyBytes) throws IllegalArgumentException {
+        if (keyBytes == null || keyBytes.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes key");
+        }
+
         long key = BytesUtil.bytesToLong(keyBytes);
         long leftPartKey = key >>> (Long.SIZE - SIZE_KEY_BITS / 2);
         long rightPartKey = (key << (SIZE_KEY_BITS / 2)) >>> (Long.SIZE - SIZE_KEY_BITS / 2);

@@ -1,39 +1,43 @@
 package ru.mai;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.mai.cipher.cipher_impl.DES.DES;
+import ru.mai.cipher.cipher_impl.cipher_conversion.CipherConversion;
+import ru.mai.cipher.cipher_impl.feistel_network.FeistelNetwork;
+import ru.mai.cipher.cipher_impl.mode.ECB.ECBMode;
+import ru.mai.cipher.cipher_interface.ICipher;
+import ru.mai.cipher.cipher_interface.ICipherConversion;
+import ru.mai.cipher.cipher_interface.IFeistelNetwork;
 import ru.mai.cipher.cipher_service.CipherService;
 import ru.mai.cipher.cipher_service.CipherService.CipherAlgorithm;
-import ru.mai.cipher.cipher_service.CipherService.StuffingMode;
 import ru.mai.cipher.cipher_service.CipherService.EncryptionMode;
+import ru.mai.cipher.cipher_service.CipherService.StuffingMode;
+import ru.mai.utils.BytesUtil;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         byte[] key = {1, 2, 3, 4, 5, 6, 7};
-        byte[] text1 = {1, 1, 1, 1, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1};
-        byte[] text2 = {1, 1, 1, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1, 1, 1, 1, 5, 6, 7, 8, 1};
 
         CipherService service = new CipherService(
                 key,
                 CipherAlgorithm.DES,
                 EncryptionMode.ECB,
                 StuffingMode.ANSI_X_923,
-                new byte[] {1, 2, 3, 4, 5, 6, 7, 8});
+                new byte[]{1, 2, 3, 4, 5, 6, 7, 8});
 
-        try {
-            byte[] encryptText1 = service.encrypt(text1);
-            byte[] encryptText2 = service.encrypt(text2);
-            byte[] decryptText1 = service.decipher(encryptText1);
-            byte[] decryptText2 = service.decipher(encryptText2);
+        String source = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/tests/input/image.jpg";
+        String encrypt = service.encrypt(source);
+        String decrypt = service.decrypt(encrypt);
 
-            System.out.println(Arrays.equals(text1, decryptText1));
-            System.out.println(Arrays.equals(text2, decryptText2));
-        } catch (ExecutionException | InterruptedException e) {
-            log.error(e.getMessage());
-            e.printStackTrace();
-        }
+        byte[] sourceBytes = Files.readAllBytes(Paths.get(source));
+        byte[] decryptBytes = Files.readAllBytes(Paths.get(decrypt));
+
+        System.out.println(Arrays.equals(sourceBytes, decryptBytes));
     }
 }

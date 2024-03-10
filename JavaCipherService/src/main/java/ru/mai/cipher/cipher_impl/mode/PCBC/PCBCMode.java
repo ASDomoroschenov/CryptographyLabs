@@ -11,7 +11,11 @@ public class PCBCMode implements ICipherMode {
     private byte[] initialVector;
 
     @Override
-    public byte[] encrypt(byte[] text) {
+    public byte[] encrypt(byte[] text) throws IllegalArgumentException {
+        if (text == null || text.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+
         int textBlockSize = cipher.getTextBlockSize();
         byte[] textBlock = new byte[textBlockSize];
         byte[] prevTextBlock = new byte[textBlockSize];
@@ -29,7 +33,11 @@ public class PCBCMode implements ICipherMode {
     }
 
     @Override
-    public byte[] decrypt(byte[] text) {
+    public byte[] decrypt(byte[] text) throws IllegalArgumentException {
+        if (text == null || text.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+
         int textBlockSize = cipher.getTextBlockSize();
         byte[] textBlock = new byte[textBlockSize];
         byte[] prevCipherBlock = new byte[textBlockSize];

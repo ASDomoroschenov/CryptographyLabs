@@ -1,15 +1,15 @@
 package ru.mai.cipher.cipher_impl.mode.CTR;
 
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairMode;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairIndexText;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
-public class ThreadTaskCTR implements IThreadTask {
+public class ThreadTaskCipherCTR implements IThreadTask {
     private final ICipher cipher;
     private final byte[][] counterBlocks;
 
-    public ThreadTaskCTR(ICipher cipher, byte[] text, byte[] initialVector) {
+    public ThreadTaskCipherCTR(ICipher cipher, byte[] text, byte[] initialVector) {
         this.cipher = cipher;
         counterBlocks = new byte[text.length / cipher.getTextBlockSize()][cipher.getTextBlockSize()];
         long counter = BytesUtil.bytesToLong(initialVector);
@@ -27,7 +27,7 @@ public class ThreadTaskCTR implements IThreadTask {
     }
 
     @Override
-    public PairMode apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
+    public PairIndexText apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
         byte[] result = new byte[countBlocks * textBlockSize];
         byte[] textBlock = new byte[textBlockSize];
 
@@ -37,6 +37,6 @@ public class ThreadTaskCTR implements IThreadTask {
             System.arraycopy(cipherBlockText, 0, result, i * textBlockSize, textBlockSize);
         }
 
-        return new PairMode(indexBegin, result);
+        return new PairIndexText(indexBegin, result);
     }
 }

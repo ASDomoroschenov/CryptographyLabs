@@ -9,6 +9,8 @@ import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.cipher.cipher_interface.IFeistelNetwork;
 import ru.mai.utils.BytesUtil;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class DES implements ICipher {
     private final byte[] key;
     private final DESKeyGenerator keyGenerator;
@@ -16,6 +18,8 @@ public class DES implements ICipher {
     private static final int NUMBER_OF_ROUNDS = 16;
 
     private static final int TEXT_BLOCK_BYTES_SIZE = 8;
+
+    private static final int KEY_BYTES_SIZE = 7;
 
     private static final int[] INITIAL_PERMUTATION = {
             58, 50, 42, 34, 26, 18, 10, 2, 60, 52, 44, 36, 28, 20, 12, 4,
@@ -32,12 +36,20 @@ public class DES implements ICipher {
     };
 
     public DES(byte[] key) {
+        if (key == null || key.length != KEY_BYTES_SIZE) {
+            throw new IllegalArgumentException("Illegal bytes key");
+        }
+
         this.key = key;
         keyGenerator = new DESKeyGenerator(key);
     }
 
     @Override
-    public byte[] encrypt(byte[] block) {
+    public byte[] encrypt(byte[] block) throws IllegalArgumentException {
+        if (block == null || block.length != TEXT_BLOCK_BYTES_SIZE) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+
         IFeistelNetwork feistelNetwork = new FeistelNetwork(new DESEncryptKeyGenerator(keyGenerator), new CipherConversion());
         block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
         block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
@@ -45,7 +57,11 @@ public class DES implements ICipher {
     }
 
     @Override
-    public byte[] decrypt(byte[] block) {
+    public byte[] decrypt(byte[] block) throws IllegalArgumentException {
+        if (block == null || block.length != TEXT_BLOCK_BYTES_SIZE) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+
         IFeistelNetwork feistelNetwork = new FeistelNetwork(new DESDecryptKeyGenerator(keyGenerator), new CipherConversion());
         block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
         block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
@@ -55,5 +71,10 @@ public class DES implements ICipher {
     @Override
     public int getTextBlockSize() {
         return TEXT_BLOCK_BYTES_SIZE;
+    }
+
+    @Override
+    public int getKeySize() {
+        return KEY_BYTES_SIZE;
     }
 }

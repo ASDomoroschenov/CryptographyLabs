@@ -2,7 +2,7 @@ package ru.mai.cipher.cipher_impl.mode.ECB;
 
 import lombok.AllArgsConstructor;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairMode;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairIndexText;
 import ru.mai.cipher.cipher_interface.ICipher;
 
 @AllArgsConstructor
@@ -10,7 +10,7 @@ public class ThreadTaskEncryptECB implements IThreadTask {
     private ICipher cipher;
 
     @Override
-    public PairMode apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
+    public PairIndexText apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
         byte[] result = new byte[countBlocks * textBlockSize];
         byte[] textBlock = new byte[textBlockSize];
 
@@ -20,6 +20,6 @@ public class ThreadTaskEncryptECB implements IThreadTask {
             System.arraycopy(deCipherBlockText, 0, result, i * textBlockSize, textBlockSize);
         }
 
-        return new PairMode(indexBegin, result);
+        return new PairIndexText(indexBegin, result);
     }
 }

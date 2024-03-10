@@ -9,7 +9,11 @@ public class DESDecryptKeyGenerator implements IRoundKeyGenerator {
     private final DESKeyGenerator keyGenerator;
 
     @Override
-    public byte[][] generate(byte[] key) {
+    public byte[][] generate(byte[] key) throws IllegalArgumentException {
+        if (key == null || key.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes key");
+        }
+
         byte[][] keys = keyGenerator.getRoundKeys().clone();
         ArrayUtils.reverse(keys);
         return keys;

@@ -1,14 +1,14 @@
 package ru.mai.cipher.cipher_impl.mode.OFB;
 
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairMode;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairIndexText;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.utils.BytesUtil;
 
-public class ThreadTaskOFB implements IThreadTask {
+public class ThreadTaskCipherOFB implements IThreadTask {
     private final byte[][] keyBlocks;
 
-    public ThreadTaskOFB(ICipher cipher, byte[] text, byte[] initialVector) {
+    public ThreadTaskCipherOFB(ICipher cipher, byte[] text, byte[] initialVector) {
 
         keyBlocks = new byte[text.length / cipher.getTextBlockSize()][];
         byte[] keyBlock = initialVector;
@@ -20,7 +20,7 @@ public class ThreadTaskOFB implements IThreadTask {
     }
 
     @Override
-    public PairMode apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
+    public PairIndexText apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
         byte[] result = new byte[countBlocks * textBlockSize];
         byte[] textBlock = new byte[textBlockSize];
 
@@ -30,6 +30,6 @@ public class ThreadTaskOFB implements IThreadTask {
             System.arraycopy(cipherBlockText, 0, result, i * textBlockSize, textBlockSize);
         }
 
-        return new PairMode(indexBegin, result);
+        return new PairIndexText(indexBegin, result);
     }
 }

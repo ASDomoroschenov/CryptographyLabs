@@ -1,30 +1,45 @@
 package ru.mai.cipher.cipher_impl.mode.ECB;
 
 import lombok.AllArgsConstructor;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectTextMode;
+import lombok.extern.slf4j.Slf4j;
+import ru.mai.cipher.cipher_impl.mode.CTR.ThreadTaskCipherCTR;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectText;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.ThreadCipher;
 import ru.mai.cipher.cipher_interface.ICipherMode;
 import ru.mai.cipher.cipher_interface.ICipher;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicLong;
 
+@Slf4j
 @AllArgsConstructor
 public class ECBMode implements ICipherMode {
     private ICipher cipher;
 
     @Override
-    public byte[] encrypt(byte[] text) throws ExecutionException, InterruptedException {
+    public byte[] encrypt(byte[] text) throws IllegalArgumentException {
+        if (text == null || text.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+
         return new ThreadCipher(
                 cipher.getTextBlockSize(),
                 new ThreadTaskEncryptECB(cipher),
-                new CollectTextMode()).cipher(text);
+                new CollectText()
+        ).cipher(text);
     }
 
     @Override
-    public byte[] decrypt(byte[] text) throws ExecutionException, InterruptedException {
+    public byte[] decrypt(byte[] text) throws IllegalArgumentException {
+        if (text == null || text.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+
         return new ThreadCipher(
                 cipher.getTextBlockSize(),
                 new ThreadTaskDecryptECB(cipher),
-                new CollectTextMode()).cipher(text);
+                new CollectText()
+        ).cipher(text);
     }
 }

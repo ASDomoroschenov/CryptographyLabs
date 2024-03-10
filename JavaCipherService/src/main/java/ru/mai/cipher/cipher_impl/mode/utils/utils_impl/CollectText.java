@@ -1,22 +1,26 @@
 package ru.mai.cipher.cipher_impl.mode.utils.utils_impl;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.ICollectText;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class CollectTextMode implements ICollectText {
+@Slf4j
+public class CollectText implements ICollectText {
     @Override
-    public byte[] collect(List<Future<PairMode>> futures, int textLength) throws ExecutionException, InterruptedException {
+    public byte[] collect(List<Future<PairIndexText>> futures, int textLength) throws ExecutionException, InterruptedException {
+
         byte[] result = new byte[textLength];
 
         while (!futures.isEmpty()) {
-            List<Future<PairMode>> listNotDoneFuture = futures.stream().filter(item -> !item.isDone()).toList();
+            List<Future<PairIndexText>> listNotDoneFuture = futures.stream().filter(item -> !item.isDone()).toList();
 
-            for (Future<PairMode> future : futures) {
+            for (Future<PairIndexText> future : futures) {
                 if (!listNotDoneFuture.contains(future)) {
-                    PairMode pair = future.get();
+                    PairIndexText pair = future.get();
                     System.arraycopy(pair.getText(), 0, result, pair.getIndex(), pair.getText().length);
                 }
             }

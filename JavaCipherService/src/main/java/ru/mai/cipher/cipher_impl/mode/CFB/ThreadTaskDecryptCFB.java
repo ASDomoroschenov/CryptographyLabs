@@ -1,7 +1,7 @@
 package ru.mai.cipher.cipher_impl.mode.CFB;
 
 import lombok.AllArgsConstructor;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairMode;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairIndexText;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.utils.BytesUtil;
@@ -12,7 +12,7 @@ public class ThreadTaskDecryptCFB implements IThreadTask {
     private byte[] initialVector;
 
     @Override
-    public PairMode apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
+    public PairIndexText apply(byte[] text, int indexBegin, int textBlockSize, int countBlocks) {
         byte[] deCipherBlock;
         byte[] result = new byte[countBlocks * textBlockSize];
         byte[] textBlock = new byte[textBlockSize];
@@ -31,6 +31,6 @@ public class ThreadTaskDecryptCFB implements IThreadTask {
             deCipherBlock = textBlock.clone();
         }
 
-        return new PairMode(indexBegin, result);
+        return new PairIndexText(indexBegin, result);
     }
 }

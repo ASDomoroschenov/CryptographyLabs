@@ -1,7 +1,13 @@
 package ru.mai.cipher.cipher_interface;
 
-public interface IPadding {
-    byte[] addPAdding(byte[] bytes, int numBytes);
+import java.io.IOException;
 
-    byte[] removePadding(byte[] bytes);
+public interface IPadding {
+    byte[] addPAdding(byte[] bytes, int numBytes) throws IllegalArgumentException;
+
+    byte[] removePadding(byte[] bytes) throws IllegalArgumentException;
+
+    String addPAdding(String pathToFile, int numBytes) throws IllegalArgumentException, IOException;
+
+    String removePadding(String pathToFile) throws IllegalArgumentException, IOException;
 }

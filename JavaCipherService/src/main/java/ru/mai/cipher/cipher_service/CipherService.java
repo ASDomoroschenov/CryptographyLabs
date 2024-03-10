@@ -1,5 +1,6 @@
 package ru.mai.cipher.cipher_service;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.mai.cipher.cipher_impl.DES.DES;
 import ru.mai.cipher.cipher_impl.mode.CBC.CBCMode;
 import ru.mai.cipher.cipher_impl.mode.CFB.CFBMode;
@@ -8,16 +9,27 @@ import ru.mai.cipher.cipher_impl.mode.ECB.ECBMode;
 import ru.mai.cipher.cipher_impl.mode.OFB.OFBMode;
 import ru.mai.cipher.cipher_impl.mode.PCBC.PCBCMode;
 import ru.mai.cipher.cipher_impl.mode.RD.RDMode;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectText;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.ThreadCipher;
 import ru.mai.cipher.cipher_impl.padding.ANSIX923Padding;
 import ru.mai.cipher.cipher_impl.padding.ISO10126Padding;
 import ru.mai.cipher.cipher_impl.padding.PKCS7Padding;
 import ru.mai.cipher.cipher_impl.padding.ZerosPadding;
+import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.cipher.cipher_interface.ICipherMode;
 import ru.mai.cipher.cipher_interface.IPadding;
-import ru.mai.cipher.cipher_interface.ICipher;
 
-import java.util.concurrent.ExecutionException;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.*;
 
+@Slf4j
 public class CipherService {
     public enum EncryptionMode {
         ECB,
@@ -37,14 +49,20 @@ public class CipherService {
     }
 
     public enum CipherAlgorithm {
-        DES
+        DES,
+        DEAl
     }
 
-    private byte[] key;
-    private ICipher cipher;
-    private ICipherMode cipherMode;
-    private IPadding padding;
-    private byte[] initialVector;
+    public enum CipherActions {
+        ENCRYPT,
+        DECRYPT
+    }
+
+    private final byte[] key;
+    private final ICipher cipher;
+    private final ICipherMode cipherMode;
+    private final IPadding padding;
+    private final byte[] initialVector;
 
     public CipherService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, Object... additionalArgs) {
         this.key = key;
@@ -52,20 +70,31 @@ public class CipherService {
         this.cipherMode = getEncryptionMode(encryptionMode);
         this.padding = getStuffingMode(stuffingMode);
         initialVector = null;
+
+        if (key.length != cipher.getKeySize()) {
+            throw new IllegalArgumentException("Invalid size key");
+        }
     }
 
     public CipherService(byte[] key, CipherAlgorithm cipherAlgorithm, EncryptionMode encryptionMode, StuffingMode stuffingMode, byte[] initialVector, Object... additionalArgs) {
         this.key = key;
-        this.initialVector = initialVector;
+        this.initialVector = initialVector.clone();
         this.cipher = getCipherAlgorithm(cipherAlgorithm);
         this.cipherMode = getEncryptionMode(encryptionMode);
         this.padding = getStuffingMode(stuffingMode);
+
+        if (initialVector.length != cipher.getTextBlockSize()) {
+            throw new IllegalArgumentException("Invalid size initial vector");
+        }
     }
 
     public ICipher getCipherAlgorithm(CipherAlgorithm cipherAlgorithm) {
         switch (cipherAlgorithm) {
             case DES -> {
                 return new DES(key);
+            }
+            case DEAl -> {
+
             }
         }
 
@@ -119,19 +148,132 @@ public class CipherService {
         return null;
     }
 
-    public byte[] encrypt(byte[] text) throws ExecutionException, InterruptedException {
-        return cipherMode.encrypt(padding.addPAdding(text, cipher.getTextBlockSize()));
+    public byte[] encrypt(byte[] text) {
+        byte[] result = null;
+
+        try {
+            result = new ThreadCipher(
+                    cipher.getTextBlockSize(),
+                    new ThreadTaskEncryptText(cipherMode),
+                    new CollectText()
+            ).cipher(padding.addPAdding(text, cipher.getTextBlockSize()));
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            log.error(Arrays.toString(ex.getStackTrace()));
+        }
+
+        return result;
     }
 
-    public String encrypt(String inputFilePath) {
+    public String encrypt(String pathToInputFile) throws IOException {
+        String fileWithPadding = padding.addPAdding(pathToInputFile, cipher.getTextBlockSize());
+        String encryptFile = cipherFile(fileWithPadding, getOutputFileName(pathToInputFile, "_enc"), CipherActions.ENCRYPT);;
+        new File(fileWithPadding).delete();
+        return encryptFile;
+    }
+
+    public byte[] decrypt(byte[] text) {
+        byte[] result = null;
+
+        try {
+            result = padding.removePadding(new ThreadCipher(
+                    cipher.getTextBlockSize(),
+                    new ThreadTaskDecryptText(cipherMode),
+                    new CollectText()
+            ).cipher(text));
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            log.error(Arrays.toString(ex.getStackTrace()));
+        }
+
+        return result;
+    }
+
+    public String decrypt(String pathToInputFile) throws IOException {
+        String decryptFile = cipherFile(pathToInputFile, getOutputFileName(pathToInputFile, "_dec"), CipherActions.DECRYPT);
+        String removePaddingFile = padding.removePadding(decryptFile);
+
+        new File(removePaddingFile).renameTo(new File(decryptFile));
+
+        return decryptFile;
+    }
+
+    private String cipherFile(String pathToInputFile, String pathToOutputFile, CipherActions cipherActions) {
+        int availableProcessors = Runtime.getRuntime().availableProcessors();
+        ExecutorService service = Executors.newFixedThreadPool(availableProcessors);
+        List<Future<byte[]>> futures = new ArrayList<>();
+
+        try (RandomAccessFile file = new RandomAccessFile(pathToInputFile, "r")) {
+            long skipValue = 0;
+            long sizePartsThread= ((file.length() / cipher.getTextBlockSize()) + availableProcessors - 1) / availableProcessors;
+            long sizePartBytesThread = sizePartsThread * cipher.getTextBlockSize();
+
+            while (skipValue < file.length()) {
+                long finalSkipValue = skipValue;
+                futures.add(service.submit(() -> threadTaskCipherFile(pathToInputFile, finalSkipValue, sizePartBytesThread, cipherActions)));
+                skipValue += sizePartBytesThread;
+            }
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            log.error(Arrays.toString(ex.getStackTrace()));
+        }
+
+        try (RandomAccessFile file = new RandomAccessFile(pathToOutputFile, "rw")) {
+            for (Future<byte[]> future : futures) {
+                byte[] text = future.get();
+                file.write(text);
+            }
+        } catch (IOException | ExecutionException | InterruptedException ex) {
+            log.error(ex.getMessage());
+            log.error(Arrays.toString(ex.getStackTrace()));
+        }
+
+        service.shutdown();
+
+        try {
+            if (!service.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
+                service.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            service.shutdownNow();
+        }
+
+        return pathToOutputFile;
+    }
+
+    private byte[] threadTaskCipherFile(String pathToInputFile, long skipValue, long sizePartBytesThread, CipherActions cipherActions) {
+        byte[] text = new byte[(int) sizePartBytesThread];
+
+        try (RandomAccessFile file = new RandomAccessFile(pathToInputFile, "r")) {
+            file.seek(skipValue);
+            int countBytes = file.read(text);
+
+            if (countBytes != sizePartBytesThread) {
+                byte[] trimText = new byte[countBytes];
+                System.arraycopy(text, 0, trimText, 0, countBytes);
+                text = trimText;
+            }
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            log.error(Arrays.toString(ex.getStackTrace()));
+        }
+
+        switch (cipherActions) {
+            case ENCRYPT -> {
+                return cipherMode.encrypt(text);
+            }
+            case DECRYPT -> {
+                return cipherMode.decrypt(text);
+            }
+        }
+
         return null;
     }
 
-    public byte[] decipher(byte[] text) throws ExecutionException, InterruptedException {
-        return padding.removePadding(cipherMode.decrypt(text));
-    }
-
-    public String decipher(String inputFilePath) {
-        return null;
+    private String getOutputFileName(String pathToInputFile, String prefix) {
+        int dotIndex = pathToInputFile.lastIndexOf('.');
+        String baseName = pathToInputFile.substring(0, dotIndex);
+        String extension = pathToInputFile.substring(dotIndex);
+        return baseName + prefix + extension;
     }
 }

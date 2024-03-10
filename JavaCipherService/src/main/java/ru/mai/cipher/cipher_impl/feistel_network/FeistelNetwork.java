@@ -6,13 +6,25 @@ import ru.mai.cipher.cipher_interface.IFeistelNetwork;
 import ru.mai.cipher.cipher_interface.IRoundKeyGenerator;
 import ru.mai.utils.BytesUtil;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 @AllArgsConstructor
 public class FeistelNetwork implements IFeistelNetwork {
     private IRoundKeyGenerator keyGenerator;
     private ICipherConversion encryption;
 
     @Override
-    public byte[] apply(byte[] bytes, byte[] key, int numRounds) {
+    public byte[] apply(byte[] bytes, byte[] key, int numRounds) throws IllegalArgumentException {
+        if (bytes == null || bytes.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes text");
+        }
+        if (key == null || key.length == 0) {
+            throw new IllegalArgumentException("Illegal bytes key");
+        }
+        if(numRounds <= 0) {
+            throw new IllegalArgumentException("Illegal number of rounds");
+        }
+
         byte[][] splitHalfBytes = BytesUtil.splitInHalf(bytes);
         byte[][] roundKeys = keyGenerator.generate(key);
 
