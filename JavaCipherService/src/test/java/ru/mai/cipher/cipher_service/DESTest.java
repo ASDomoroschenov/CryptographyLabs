@@ -41,7 +41,7 @@ public class DESTest {
     @DataProvider(name = "testDataFile")
     public Object[][] testDataFile() {
         return new Object[][] {
-                {"/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/tests/input/text.txt"}
+                {"/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/test/input/text.txt"}
         };
     }
 
