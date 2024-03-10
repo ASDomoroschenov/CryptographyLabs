@@ -3,7 +3,6 @@ package ru.mai.cipher.cipher_impl.mode.utils.utils_impl;
 import lombok.extern.slf4j.Slf4j;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.ICollectText;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;

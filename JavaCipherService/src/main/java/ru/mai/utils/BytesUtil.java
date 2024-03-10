@@ -1,15 +1,7 @@
 package ru.mai.utils;
 
-import java.nio.ByteBuffer;
-import java.util.concurrent.atomic.AtomicLong;
-
 public class BytesUtil {
-    private static AtomicLong timeXor = new AtomicLong(0);
-    private static AtomicLong timeLongToBytes = new AtomicLong(0);
-    private static AtomicLong timeBytesToLong = new AtomicLong(0);
-
     public static byte[] xor(byte[] first, byte[] second) {
-        long begin = System.currentTimeMillis();
         int maxLength = Integer.max(first.length, second.length);
         byte[] result = new byte[maxLength];
 
@@ -19,25 +11,21 @@ public class BytesUtil {
             result[maxLength - i - 1] = (byte) (firstByte ^ secondByte);
         }
 
-        timeXor.addAndGet(System.currentTimeMillis() - begin);
-
         return result;
     }
 
     public static byte[] longToBytes(long number, int countBytes) {
-        long begin = System.currentTimeMillis();
         byte[] result = new byte[countBytes];
 
         for (int i = countBytes - 1; i >= 0; i--) {
             result[i] = (byte) (number & ((1 << Long.BYTES) - 1));
             number >>= Byte.SIZE;
         }
-        timeLongToBytes.addAndGet(System.currentTimeMillis() - begin);
+
         return result;
     }
 
     public static long bytesToLong(byte[] bytes) {
-        long begin = System.currentTimeMillis();
         if (bytes.length > 8) {
             throw new IllegalArgumentException("Can't convert a byte array whose length exceeds 8");
         }
@@ -48,8 +36,6 @@ public class BytesUtil {
             result <<= Byte.SIZE;
             result |= byteItem;
         }
-
-        timeBytesToLong.addAndGet(System.currentTimeMillis() - begin);
 
         return result;
     }
@@ -91,17 +77,5 @@ public class BytesUtil {
         }
 
         return null;
-    }
-
-    public static long getTimeXor() {
-        return timeXor.get();
-    }
-
-    public static long getTimeLongToBytes() {
-        return timeLongToBytes.get();
-    }
-
-    public static long getTimeBytesToLong() {
-        return timeBytesToLong.get();
     }
 }

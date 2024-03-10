@@ -4,8 +4,6 @@ import ru.mai.cipher.cipher_interface.ICipherConversion;
 import ru.mai.utils.BitsUtil;
 import ru.mai.utils.BytesUtil;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 public class CipherConversion implements ICipherConversion {
     private static final int[] EXTENSION_BLOCK_PERMUTATION = {
             32, 1, 2, 3, 4, 5,

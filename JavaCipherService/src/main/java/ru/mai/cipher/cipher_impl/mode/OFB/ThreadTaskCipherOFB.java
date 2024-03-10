@@ -13,7 +13,7 @@ public class ThreadTaskCipherOFB implements IThreadTask {
         keyBlocks = new byte[text.length / cipher.getTextBlockSize()][];
         byte[] keyBlock = initialVector;
 
-        for (int i = 0; i < text.length / cipher.getTextBlockSize() ; i++) {
+        for (int i = 0; i < text.length / cipher.getTextBlockSize(); i++) {
             keyBlocks[i] = keyBlock.clone();
             keyBlock = cipher.encrypt(keyBlock);
         }

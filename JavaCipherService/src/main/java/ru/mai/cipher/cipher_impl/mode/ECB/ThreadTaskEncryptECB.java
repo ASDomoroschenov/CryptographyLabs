@@ -1,8 +1,8 @@
 package ru.mai.cipher.cipher_impl.mode.ECB;
 
 import lombok.AllArgsConstructor;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairIndexText;
+import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_interface.ICipher;
 
 @AllArgsConstructor

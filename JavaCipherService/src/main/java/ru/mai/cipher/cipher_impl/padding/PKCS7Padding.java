@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
-import java.util.Random;
 
 public class PKCS7Padding implements IPadding {
     @Override

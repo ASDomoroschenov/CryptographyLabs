@@ -6,8 +6,6 @@ import ru.mai.cipher.cipher_interface.IPadding;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Arrays;
-import java.util.Random;
 
 public class ANSIX923Padding implements IPadding {
     @Override

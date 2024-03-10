@@ -2,7 +2,6 @@ package ru.mai.cipher.cipher_impl.mode.utils.utils_impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 @AllArgsConstructor

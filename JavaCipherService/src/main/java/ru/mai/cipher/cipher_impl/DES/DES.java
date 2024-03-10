@@ -9,8 +9,6 @@ import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.cipher.cipher_interface.IFeistelNetwork;
 import ru.mai.utils.BytesUtil;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 public class DES implements ICipher {
     private final byte[] key;
     private final DESKeyGenerator keyGenerator;

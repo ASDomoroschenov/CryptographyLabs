@@ -4,12 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectText;
 import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.ThreadCipher;
-import ru.mai.cipher.cipher_interface.ICipherMode;
 import ru.mai.cipher.cipher_interface.ICipher;
+import ru.mai.cipher.cipher_interface.ICipherMode;
 import ru.mai.utils.BytesUtil;
-
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @AllArgsConstructor

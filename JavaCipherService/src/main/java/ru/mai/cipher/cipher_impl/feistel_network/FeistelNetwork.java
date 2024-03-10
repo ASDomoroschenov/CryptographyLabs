@@ -6,8 +6,6 @@ import ru.mai.cipher.cipher_interface.IFeistelNetwork;
 import ru.mai.cipher.cipher_interface.IRoundKeyGenerator;
 import ru.mai.utils.BytesUtil;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 @AllArgsConstructor
 public class FeistelNetwork implements IFeistelNetwork {
     private IRoundKeyGenerator keyGenerator;
@@ -21,7 +19,7 @@ public class FeistelNetwork implements IFeistelNetwork {
         if (key == null || key.length == 0) {
             throw new IllegalArgumentException("Illegal bytes key");
         }
-        if(numRounds <= 0) {
+        if (numRounds <= 0) {
             throw new IllegalArgumentException("Illegal number of rounds");
         }
 

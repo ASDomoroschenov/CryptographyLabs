@@ -22,8 +22,6 @@ import ru.mai.cipher.cipher_interface.IPadding;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -166,9 +164,17 @@ public class CipherService {
     }
 
     public String encrypt(String pathToInputFile) throws IOException {
-        String fileWithPadding = padding.addPAdding(pathToInputFile, cipher.getTextBlockSize());
-        String encryptFile = cipherFile(fileWithPadding, getOutputFileName(pathToInputFile, "_enc"), CipherActions.ENCRYPT);;
-        new File(fileWithPadding).delete();
+        String encryptFile = null;
+
+        try {
+            String fileWithPadding = padding.addPAdding(pathToInputFile, cipher.getTextBlockSize());
+            encryptFile = cipherFile(fileWithPadding, getOutputFileName(pathToInputFile, "_enc"), CipherActions.ENCRYPT);
+            new File(fileWithPadding).delete();
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            log.error(Arrays.toString(ex.getStackTrace()));
+        }
+
         return encryptFile;
     }
 
@@ -190,10 +196,16 @@ public class CipherService {
     }
 
     public String decrypt(String pathToInputFile) throws IOException {
-        String decryptFile = cipherFile(pathToInputFile, getOutputFileName(pathToInputFile, "_dec"), CipherActions.DECRYPT);
-        String removePaddingFile = padding.removePadding(decryptFile);
+        String decryptFile = null;
 
-        new File(removePaddingFile).renameTo(new File(decryptFile));
+        try {
+            decryptFile = cipherFile(pathToInputFile, getOutputFileName(pathToInputFile, "_dec"), CipherActions.DECRYPT);
+            String removePaddingFile = padding.removePadding(decryptFile);
+            new File(removePaddingFile).renameTo(new File(decryptFile));
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            log.error(Arrays.toString(ex.getStackTrace()));
+        }
 
         return decryptFile;
     }
@@ -205,7 +217,7 @@ public class CipherService {
 
         try (RandomAccessFile file = new RandomAccessFile(pathToInputFile, "r")) {
             long skipValue = 0;
-            long sizePartsThread= ((file.length() / cipher.getTextBlockSize()) + availableProcessors - 1) / availableProcessors;
+            long sizePartsThread = ((file.length() / cipher.getTextBlockSize()) + availableProcessors - 1) / availableProcessors;
             long sizePartBytesThread = sizePartsThread * cipher.getTextBlockSize();
 
             while (skipValue < file.length()) {
