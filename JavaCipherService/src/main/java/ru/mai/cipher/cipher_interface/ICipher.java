@@ -7,5 +7,5 @@ public interface ICipher {
 
     int getTextBlockSize();
 
-    int getKeySize();
+    boolean checkKey(byte[] key);
 }

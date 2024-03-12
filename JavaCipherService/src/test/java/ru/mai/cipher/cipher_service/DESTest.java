@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import static org.testng.internal.junit.ArrayAsserts.assertArrayEquals;
 
 public class DESTest {
-    private static final byte[] key = {1, 2, 3, 4, 5, 6, 7};
+    private static final byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
     private static final byte[] iv = {1, 2, 3, 4, 5, 6, 7, 8};
 
     @DataProvider(name = "testDataText")
@@ -24,12 +24,12 @@ public class DESTest {
                 },
                 {
                         """
-                                Я лишился девственности в 20 лет. Не так, как это обычно бывает с парнями моего возраста. Все куда тяжелее - и никакой романтики.
+                        Я лишился девственности в 20 лет. Не так, как это обычно бывает с парнями моего возраста. Все куда тяжелее - и никакой романтики.
                         """.getBytes()
                 },
                 {
                         """
-                                Мой хомяк
+                        Мой хомяк
                         """.getBytes()
                 },
                 {
@@ -271,7 +271,7 @@ public class DESTest {
     }
 
     @Test(dataProvider = "testDataFile")
-    public void testFileRD(String testDataFile) throws IOException {
+    public void testFileRDDES(String testDataFile) throws IOException {
         CipherService cipherService = new CipherService(
                 key,
                 CipherService.CipherAlgorithm.DES,

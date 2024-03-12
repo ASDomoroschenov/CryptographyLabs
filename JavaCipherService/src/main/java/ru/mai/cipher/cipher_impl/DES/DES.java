@@ -7,7 +7,7 @@ import ru.mai.cipher.cipher_impl.DES.key_generate.DESEncryptKeyGenerator;
 import ru.mai.cipher.cipher_impl.DES.key_generate.DESKeyGenerator;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.cipher.cipher_interface.IFeistelNetwork;
-import ru.mai.utils.BytesUtil;
+import ru.mai.utils.utils_impl.BytesUtil;
 
 public class DES implements ICipher {
     private final byte[] key;
@@ -17,7 +17,7 @@ public class DES implements ICipher {
 
     private static final int TEXT_BLOCK_BYTES_SIZE = 8;
 
-    private static final int KEY_BYTES_SIZE = 7;
+    private static final int KEY_BYTES_SIZE = 8;
 
     private static final int[] INITIAL_PERMUTATION = {
             58, 50, 42, 34, 26, 18, 10, 2, 60, 52, 44, 36, 28, 20, 12, 4,
@@ -35,7 +35,7 @@ public class DES implements ICipher {
 
     public DES(byte[] key) {
         if (key == null || key.length != KEY_BYTES_SIZE) {
-            throw new IllegalArgumentException("Illegal bytes key");
+            throw new IllegalArgumentException("Invalid key");
         }
 
         this.key = key;
@@ -72,7 +72,7 @@ public class DES implements ICipher {
     }
 
     @Override
-    public int getKeySize() {
-        return KEY_BYTES_SIZE;
+    public boolean checkKey(byte[] key) {
+        return key.length == KEY_BYTES_SIZE;
     }
 }

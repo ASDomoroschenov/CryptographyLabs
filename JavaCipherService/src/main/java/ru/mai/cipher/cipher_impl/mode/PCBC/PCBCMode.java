@@ -3,7 +3,7 @@ package ru.mai.cipher.cipher_impl.mode.PCBC;
 import lombok.AllArgsConstructor;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.cipher.cipher_interface.ICipherMode;
-import ru.mai.utils.BytesUtil;
+import ru.mai.utils.utils_impl.BytesUtil;
 
 @AllArgsConstructor
 public class PCBCMode implements ICipherMode {

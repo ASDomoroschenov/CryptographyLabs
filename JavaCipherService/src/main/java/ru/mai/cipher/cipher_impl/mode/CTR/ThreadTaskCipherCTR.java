@@ -1,9 +1,9 @@
 package ru.mai.cipher.cipher_impl.mode.CTR;
 
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairIndexText;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
+import ru.mai.utils.utils_impl.PairIndexText;
+import ru.mai.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_interface.ICipher;
-import ru.mai.utils.BytesUtil;
+import ru.mai.utils.utils_impl.BytesUtil;
 
 public class ThreadTaskCipherCTR implements IThreadTask {
     private final ICipher cipher;
@@ -12,18 +12,18 @@ public class ThreadTaskCipherCTR implements IThreadTask {
     public ThreadTaskCipherCTR(ICipher cipher, byte[] text, byte[] initialVector) {
         this.cipher = cipher;
         counterBlocks = new byte[text.length / cipher.getTextBlockSize()][cipher.getTextBlockSize()];
-        long counter = BytesUtil.bytesToLong(initialVector);
+        byte[] counter = initialVector.clone();
 
         for (int i = 0; i < text.length / cipher.getTextBlockSize(); i++) {
-            counterBlocks[i] = BytesUtil.longToBytes(counter, Long.BYTES);
+            counterBlocks[i] = counter;
             counter = getNextCounter(counter);
         }
     }
 
-    private long getNextCounter(long counter) {
-        int rightPartCounter = ((int) ((counter << Integer.SIZE) >> Integer.SIZE)) + 1;
-        long leftPartCounter = counter >> Integer.SIZE;
-        return leftPartCounter << Integer.SIZE | rightPartCounter;
+    private byte[] getNextCounter(byte[] counter) {
+        byte[][] halfParts = BytesUtil.splitInHalf(counter);
+        byte[] rightPartCounter = BytesUtil.longToBytes(BytesUtil.bytesToLong(halfParts[1]) + 1, Long.BYTES);
+        return BytesUtil.mergePart(halfParts[0], rightPartCounter);
     }
 
     @Override

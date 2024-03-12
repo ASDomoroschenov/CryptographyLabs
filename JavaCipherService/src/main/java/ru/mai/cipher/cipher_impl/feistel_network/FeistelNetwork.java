@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import ru.mai.cipher.cipher_interface.ICipherConversion;
 import ru.mai.cipher.cipher_interface.IFeistelNetwork;
 import ru.mai.cipher.cipher_interface.IRoundKeyGenerator;
-import ru.mai.utils.BytesUtil;
+import ru.mai.utils.utils_impl.BytesUtil;
 
 @AllArgsConstructor
 public class FeistelNetwork implements IFeistelNetwork {

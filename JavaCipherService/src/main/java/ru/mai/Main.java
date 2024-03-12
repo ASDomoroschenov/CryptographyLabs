@@ -14,18 +14,39 @@ import java.util.Arrays;
 @Slf4j
 public class Main {
     public static void main(String[] args) throws IOException {
-        byte[] key = {1, 2, 3, 4, 5, 6, 7};
-
+        byte[] keyDEAL = {1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8};
+        byte[] keyDES = {1, 2, 3, 4, 5, 6, 7, 8};
+        byte[] text = {1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8};
         CipherService service = new CipherService(
-                key,
-                CipherAlgorithm.DES,
-                EncryptionMode.ECB,
+                keyDEAL,
+                CipherAlgorithm.DEAL,
+                EncryptionMode.RD,
                 StuffingMode.ANSI_X_923,
-                new byte[]{1, 2, 3, 4, 5, 6, 7, 8});
+                keyDEAL);
+        byte[] encrypt = service.encrypt(text);
+        byte[] decrypt = service.decrypt(encrypt);
 
-        long begin = System.currentTimeMillis();
-        String source = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/test/input/video.mp4";
-        String encrypt = service.encrypt(source);
-        System.out.println(System.currentTimeMillis() - begin);
+        System.out.println(Arrays.toString(decrypt));
+
+//        byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
+//
+//        CipherService service = new CipherService(
+//                key,
+//                CipherAlgorithm.DES,
+//                EncryptionMode.ECB,
+//                StuffingMode.ANSI_X_923,
+//                new byte[]{1, 2, 3, 4, 5, 6, 7, 8});
+//
+//        long begin = System.currentTimeMillis();
+//        String source = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/test/input/text.txt";
+//        String encrypt = service.encrypt(source);
+//        String decrypt = service.decrypt(encrypt);
+//
+//        System.out.println(Arrays.equals(
+//                Files.readAllBytes(Paths.get(source)),
+//                Files.readAllBytes(Paths.get(decrypt))
+//        ));
+//
+//        System.out.println(System.currentTimeMillis() - begin);
     }
 }

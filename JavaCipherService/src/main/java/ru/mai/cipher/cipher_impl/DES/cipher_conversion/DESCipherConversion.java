@@ -1,8 +1,8 @@
 package ru.mai.cipher.cipher_impl.DES.cipher_conversion;
 
 import ru.mai.cipher.cipher_interface.ICipherConversion;
-import ru.mai.utils.BitsUtil;
-import ru.mai.utils.BytesUtil;
+import ru.mai.utils.utils_impl.BitsUtil;
+import ru.mai.utils.utils_impl.BytesUtil;
 
 public class DESCipherConversion implements ICipherConversion {
     private static final int[] EXTENSION_BLOCK_PERMUTATION = {
