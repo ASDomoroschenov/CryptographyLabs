@@ -23,13 +23,9 @@ public class Main {
                 StuffingMode.ANSI_X_923,
                 new byte[]{1, 2, 3, 4, 5, 6, 7, 8});
 
-        String source = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/tests/input/image.jpg";
+        long begin = System.currentTimeMillis();
+        String source = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/test/input/video.mp4";
         String encrypt = service.encrypt(source);
-        String decrypt = service.decrypt(encrypt);
-
-        byte[] sourceBytes = Files.readAllBytes(Paths.get(source));
-        byte[] decryptBytes = Files.readAllBytes(Paths.get(decrypt));
-
-        System.out.println(Arrays.equals(sourceBytes, decryptBytes));
+        System.out.println(System.currentTimeMillis() - begin);
     }
 }

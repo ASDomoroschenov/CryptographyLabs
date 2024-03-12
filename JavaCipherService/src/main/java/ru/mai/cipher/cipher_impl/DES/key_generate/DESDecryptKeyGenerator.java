@@ -1,4 +1,4 @@
-package ru.mai.cipher.cipher_impl.key_generate;
+package ru.mai.cipher.cipher_impl.DES.key_generate;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.ArrayUtils;

@@ -1,10 +1,10 @@
-package ru.mai.cipher.cipher_impl.cipher_conversion;
+package ru.mai.cipher.cipher_impl.DES.cipher_conversion;
 
 import ru.mai.cipher.cipher_interface.ICipherConversion;
 import ru.mai.utils.BitsUtil;
 import ru.mai.utils.BytesUtil;
 
-public class CipherConversion implements ICipherConversion {
+public class DESCipherConversion implements ICipherConversion {
     private static final int[] EXTENSION_BLOCK_PERMUTATION = {
             32, 1, 2, 3, 4, 5,
             4, 5, 6, 7, 8, 9,
