@@ -2,8 +2,8 @@ package ru.mai.cipher.cipher_impl.mode.CTR;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectText;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.ThreadCipher;
+import ru.mai.utils.utils_impl.CollectText;
+import ru.mai.utils.utils_impl.ThreadCipher;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.cipher.cipher_interface.ICipherMode;
 

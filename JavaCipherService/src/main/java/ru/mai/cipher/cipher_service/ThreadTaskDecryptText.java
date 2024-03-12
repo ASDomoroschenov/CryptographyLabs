@@ -1,8 +1,8 @@
 package ru.mai.cipher.cipher_service;
 
 import lombok.AllArgsConstructor;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairIndexText;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
+import ru.mai.utils.utils_impl.PairIndexText;
+import ru.mai.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_interface.ICipherMode;
 
 import java.util.concurrent.ExecutionException;

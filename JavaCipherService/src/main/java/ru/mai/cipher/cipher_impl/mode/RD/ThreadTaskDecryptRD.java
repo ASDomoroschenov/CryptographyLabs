@@ -1,9 +1,9 @@
 package ru.mai.cipher.cipher_impl.mode.RD;
 
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.PairIndexText;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_interface.ICipher;
-import ru.mai.utils.BytesUtil;
+import ru.mai.utils.utils_impl.BytesUtil;
+import ru.mai.utils.utils_impl.PairIndexText;
+import ru.mai.utils.utils_interface.IThreadTask;
 
 public class ThreadTaskDecryptRD implements IThreadTask {
     ICipher cipher;
@@ -12,17 +12,29 @@ public class ThreadTaskDecryptRD implements IThreadTask {
     public ThreadTaskDecryptRD(ICipher cipher, byte[] text, byte[] initialVector) {
         this.cipher = cipher;
         counterBlocks = new byte[text.length / cipher.getTextBlockSize()][cipher.getTextBlockSize()];
-        long delta = BytesUtil.bytesToLong(initialVector) << Integer.SIZE >> Integer.SIZE;
-        long counter = BytesUtil.bytesToLong(cipher.encrypt(initialVector));
+        byte[] delta = BytesUtil.splitInHalf(initialVector)[1];
+        byte[] counter = cipher.encrypt(initialVector);
 
         for (int i = 0; i < text.length / cipher.getTextBlockSize(); i++) {
-            counterBlocks[i] = BytesUtil.longToBytes(counter, Long.BYTES);
+            counterBlocks[i] = counter;
             counter = getNextCounter(counter, delta);
         }
     }
 
-    private long getNextCounter(long counter, long delta) {
-        return counter + delta;
+    private byte[] getNextCounter(byte[] counter, byte[] delta) {
+        byte[] result = new byte[counter.length];
+        byte remind = 0;
+
+        for (int i = 0; i < delta.length; i++) {
+            result[i] = (byte) ((counter[counter.length - i - 1] + delta[delta.length - i - 1] + remind) % 256);
+            remind = (byte) ((counter[counter.length - i - 1] + delta[delta.length - i - 1]) / 256);
+        }
+
+        if (remind != 0) {
+            result[result.length - delta.length - 1] = (byte) ((counter[counter.length - delta.length - 1] + remind) % 256);
+        }
+
+        return result;
     }
 
     @Override
