@@ -1,13 +1,13 @@
 package ru.mai.cipher.cipher_impl.DES;
 
-import ru.mai.cipher.cipher_impl.cipher_conversion.CipherConversion;
+import ru.mai.cipher.cipher_impl.DES.cipher_conversion.DESCipherConversion;
 import ru.mai.cipher.cipher_impl.feistel_network.FeistelNetwork;
-import ru.mai.cipher.cipher_impl.key_generate.DESDecryptKeyGenerator;
-import ru.mai.cipher.cipher_impl.key_generate.DESEncryptKeyGenerator;
-import ru.mai.cipher.cipher_impl.key_generate.DESKeyGenerator;
+import ru.mai.cipher.cipher_impl.DES.key_generate.DESDecryptKeyGenerator;
+import ru.mai.cipher.cipher_impl.DES.key_generate.DESEncryptKeyGenerator;
+import ru.mai.cipher.cipher_impl.DES.key_generate.DESKeyGenerator;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.cipher.cipher_interface.IFeistelNetwork;
-import ru.mai.utils.BytesUtil;
+import ru.mai.utils.utils_impl.BytesUtil;
 
 public class DES implements ICipher {
     private final byte[] key;
@@ -17,7 +17,7 @@ public class DES implements ICipher {
 
     private static final int TEXT_BLOCK_BYTES_SIZE = 8;
 
-    private static final int KEY_BYTES_SIZE = 7;
+    private static final int KEY_BYTES_SIZE = 8;
 
     private static final int[] INITIAL_PERMUTATION = {
             58, 50, 42, 34, 26, 18, 10, 2, 60, 52, 44, 36, 28, 20, 12, 4,
@@ -35,7 +35,7 @@ public class DES implements ICipher {
 
     public DES(byte[] key) {
         if (key == null || key.length != KEY_BYTES_SIZE) {
-            throw new IllegalArgumentException("Illegal bytes key");
+            throw new IllegalArgumentException("Invalid key");
         }
 
         this.key = key;
@@ -48,7 +48,7 @@ public class DES implements ICipher {
             throw new IllegalArgumentException("Illegal bytes text");
         }
 
-        IFeistelNetwork feistelNetwork = new FeistelNetwork(new DESEncryptKeyGenerator(keyGenerator), new CipherConversion());
+        IFeistelNetwork feistelNetwork = new FeistelNetwork(new DESEncryptKeyGenerator(keyGenerator), new DESCipherConversion());
         block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
         block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
         return BytesUtil.permutation(block, FINAL_PERMUTATION);
@@ -60,7 +60,7 @@ public class DES implements ICipher {
             throw new IllegalArgumentException("Illegal bytes text");
         }
 
-        IFeistelNetwork feistelNetwork = new FeistelNetwork(new DESDecryptKeyGenerator(keyGenerator), new CipherConversion());
+        IFeistelNetwork feistelNetwork = new FeistelNetwork(new DESDecryptKeyGenerator(keyGenerator), new DESCipherConversion());
         block = BytesUtil.permutation(block, INITIAL_PERMUTATION);
         block = feistelNetwork.apply(block, key, NUMBER_OF_ROUNDS);
         return BytesUtil.permutation(block, FINAL_PERMUTATION);
@@ -72,7 +72,7 @@ public class DES implements ICipher {
     }
 
     @Override
-    public int getKeySize() {
-        return KEY_BYTES_SIZE;
+    public boolean checkKey(byte[] key) {
+        return key.length == KEY_BYTES_SIZE;
     }
 }

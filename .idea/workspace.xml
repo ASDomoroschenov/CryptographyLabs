@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b5e41854-6d25-4a8e-86b1-f226259680a2" name="Changes" comment="finish">
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DEAL/DEAL.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DEAL/cipher_conversion/DEALCipherConversion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DEAL/key_generate/DEAL128KeyGenerate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DEAL/key_generate/DEAL192KeyGenerate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DEAL/key_generate/DEAL256KeyGenerate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DEAL/key_generate/DEALDecryptKeyGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DEAL/key_generate/DEALEncryptKeyGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DEAL/key_generate/DEALKeyGenerate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/resources/ru/mai/test/input/image.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/resources/ru/mai/test/input/music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/resources/ru/mai/test/input/text.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/resources/ru/mai/test/input/text_enc.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/resources/ru/mai/test/input/text_enc_dec.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/resources/ru/mai/test/input/video.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/JavaCipherService/src/main/resources/ru/mai/test/input/video_enc.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DES/DES.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DES/DES.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/cipher_conversion/CipherConversion.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DES/cipher_conversion/DESCipherConversion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/feistel_network/FeistelNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/feistel_network/FeistelNetwork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/key_generate/DESDecryptKeyGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DES/key_generate/DESDecryptKeyGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/key_generate/DESEncryptKeyGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DES/key_generate/DESEncryptKeyGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/key_generate/DESKeyGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/DES/key_generate/DESKeyGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CBC/CBCMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CBC/CBCMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CBC/ThreadTaskDecryptCBC.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CBC/ThreadTaskDecryptCBC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CFB/CFBMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CFB/CFBMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CFB/ThreadTaskDecryptCFB.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CFB/ThreadTaskDecryptCFB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CTR/CTRMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CTR/CTRMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CTR/ThreadTaskCipherCTR.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/CTR/ThreadTaskCipherCTR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/ECB/ECBMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/ECB/ECBMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/ECB/ThreadTaskDecryptECB.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/ECB/ThreadTaskDecryptECB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/ECB/ThreadTaskEncryptECB.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/ECB/ThreadTaskEncryptECB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/OFB/OFBMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/OFB/OFBMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/OFB/ThreadTaskCipherOFB.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/OFB/ThreadTaskCipherOFB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/PCBC/PCBCMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/PCBC/PCBCMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/RD/RDMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/RD/RDMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/RD/ThreadTaskDecryptRD.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/RD/ThreadTaskDecryptRD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/RD/ThreadTaskEncryptRD.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/RD/ThreadTaskEncryptRD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/utils/utils_impl/CollectText.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/utils_impl/CollectText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/utils/utils_impl/PairIndexText.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/utils_impl/PairIndexText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/utils/utils_impl/ThreadCipher.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/utils_impl/ThreadCipher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/utils/utils_interface/ICollectText.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/utils_interface/ICollectText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/utils/utils_interface/IThreadCipher.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/utils_interface/IThreadCipher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/mode/utils/utils_interface/IThreadTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/utils_interface/IThreadTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/padding/ANSIX923Padding.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_impl/padding/ANSIX923Padding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_interface/ICipher.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_interface/ICipher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_interface/IFeistelNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_interface/IFeistelNetwork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_service/CipherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_service/CipherService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_service/ThreadTaskDecryptText.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_service/ThreadTaskDecryptText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_service/ThreadTaskEncryptText.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/cipher/cipher_service/ThreadTaskEncryptText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/BitsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/utils_impl/BitsUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/BytesUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/main/java/ru/mai/utils/utils_impl/BytesUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCipherService/src/test/java/ru/mai/cipher/cipher_service/DESTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCipherService/src/test/java/ru/mai/cipher/cipher_service/DESTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="lab1/task5" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2dXpsQxtt1USoB7liD9YsbxnLnz" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Merging lab1/task4",
+    "last_opened_file_path": "/home/alexandr/CryptographyLabs",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="JavaCipherService" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ru.mai.Main" />
+      <module name="JavaCipherService" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DEALTest" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="JavaCipherService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.mai.cipher.cipher_service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.mai.cipher.cipher_service" />
+      <option name="MAIN_CLASS_NAME" value="ru.mai.cipher.cipher_service.DEALTest" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DESTest" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="JavaCipherService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.mai.cipher.cipher_service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.mai.cipher.cipher_service" />
+      <option name="MAIN_CLASS_NAME" value="ru.mai.cipher.cipher_service.DESTest" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.JavaCipherService" />
+      <item itemvalue="TestNG.DEALTest" />
+      <item itemvalue="TestNG.DESTest" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="TestNG.DESTest" />
+        <item itemvalue="TestNG.DEALTest" />
+        <item itemvalue="TestNG.DEALTest" />
+        <item itemvalue="TestNG.DESTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b5e41854-6d25-4a8e-86b1-f226259680a2" name="Changes" comment="" />
+      <created>1710164483599</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1710164483599</updated>
+      <workItem from="1710164484691" duration="229000" />
+      <workItem from="1710266920467" duration="11103000" />
+    </task>
+    <task id="LOCAL-00001" summary="finish">
+      <option name="closed" value="true" />
+      <created>1710267112331</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1710267112331</updated>
+    </task>
+    <task id="LOCAL-00002" summary="finish">
+      <option name="closed" value="true" />
+      <created>1710277158679</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1710277158679</updated>
+    </task>
+    <task id="LOCAL-00003" summary="finish">
+      <option name="closed" value="true" />
+      <created>1710277318894</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1710277318894</updated>
+    </task>
+    <task id="LOCAL-00004" summary="finish">
+      <option name="closed" value="true" />
+      <created>1710277371057</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1710277371057</updated>
+    </task>
+    <task id="LOCAL-00005" summary="finish">
+      <option name="closed" value="true" />
+      <created>1710277401256</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1710277401256</updated>
+    </task>
+    <task id="LOCAL-00006" summary="finish">
+      <option name="closed" value="true" />
+      <created>1710277667281</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1710277667281</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add .idea to gitignore">
+      <option name="closed" value="true" />
+      <created>1710277802537</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1710277802537</updated>
+    </task>
+    <task id="LOCAL-00008" summary="finish">
+      <option name="closed" value="true" />
+      <created>1710277884803</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1710277884803</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="merge" />
+    <MESSAGE value="add .idea to gitignore" />
+    <MESSAGE value="finish" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish" />
+  </component>
+</project>

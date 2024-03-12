@@ -1,6 +1,7 @@
 package ru.mai.cipher.cipher_service;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.mai.cipher.cipher_impl.DEAL.DEAL;
 import ru.mai.cipher.cipher_impl.DES.DES;
 import ru.mai.cipher.cipher_impl.mode.CBC.CBCMode;
 import ru.mai.cipher.cipher_impl.mode.CFB.CFBMode;
@@ -9,8 +10,8 @@ import ru.mai.cipher.cipher_impl.mode.ECB.ECBMode;
 import ru.mai.cipher.cipher_impl.mode.OFB.OFBMode;
 import ru.mai.cipher.cipher_impl.mode.PCBC.PCBCMode;
 import ru.mai.cipher.cipher_impl.mode.RD.RDMode;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectText;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.ThreadCipher;
+import ru.mai.utils.utils_impl.CollectText;
+import ru.mai.utils.utils_impl.ThreadCipher;
 import ru.mai.cipher.cipher_impl.padding.ANSIX923Padding;
 import ru.mai.cipher.cipher_impl.padding.ISO10126Padding;
 import ru.mai.cipher.cipher_impl.padding.PKCS7Padding;
@@ -48,7 +49,7 @@ public class CipherService {
 
     public enum CipherAlgorithm {
         DES,
-        DEAl
+        DEAL
     }
 
     public enum CipherActions {
@@ -69,8 +70,8 @@ public class CipherService {
         this.padding = getStuffingMode(stuffingMode);
         initialVector = null;
 
-        if (key.length != cipher.getKeySize()) {
-            throw new IllegalArgumentException("Invalid size key");
+        if (!this.cipher.checkKey(key)) {
+            throw new IllegalArgumentException("Invalid key");
         }
     }
 
@@ -84,6 +85,9 @@ public class CipherService {
         if (initialVector.length != cipher.getTextBlockSize()) {
             throw new IllegalArgumentException("Invalid size initial vector");
         }
+        if (!this.cipher.checkKey(key)) {
+            throw new IllegalArgumentException("Invalid key");
+        }
     }
 
     public ICipher getCipherAlgorithm(CipherAlgorithm cipherAlgorithm) {
@@ -91,8 +95,8 @@ public class CipherService {
             case DES -> {
                 return new DES(key);
             }
-            case DEAl -> {
-
+            case DEAL -> {
+                return new DEAL(key);
             }
         }
 

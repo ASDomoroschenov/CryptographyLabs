@@ -1,8 +1,8 @@
 package ru.mai.cipher.cipher_impl.mode.OFB;
 
 import lombok.AllArgsConstructor;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.CollectText;
-import ru.mai.cipher.cipher_impl.mode.utils.utils_impl.ThreadCipher;
+import ru.mai.utils.utils_impl.CollectText;
+import ru.mai.utils.utils_impl.ThreadCipher;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.cipher.cipher_interface.ICipherMode;
 
