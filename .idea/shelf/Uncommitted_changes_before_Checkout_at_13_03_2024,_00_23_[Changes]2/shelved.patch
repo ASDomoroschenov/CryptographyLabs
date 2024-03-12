@@ -1,0 +1,19 @@
+Index: JavaCipherService/src/main/java/ru/mai/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ru.mai;\n\nimport lombok.extern.slf4j.Slf4j;\nimport ru.mai.cipher.cipher_service.CipherService;\nimport ru.mai.cipher.cipher_service.CipherService.CipherAlgorithm;\nimport ru.mai.cipher.cipher_service.CipherService.EncryptionMode;\nimport ru.mai.cipher.cipher_service.CipherService.StuffingMode;\n\nimport java.io.IOException;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\nimport java.util.Arrays;\n\n@Slf4j\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        byte[] key = {1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8};\n\n        CipherService service = new CipherService(\n                key,\n                CipherAlgorithm.DES,\n                EncryptionMode.ECB,\n                StuffingMode.ANSI_X_923,\n                key);\n\n        long begin = System.currentTimeMillis();\n        String source = \"/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/test/input/text.txt\";\n        String encrypt = service.encrypt(source);\n        String decrypt = service.decrypt(encrypt);\n\n        System.out.println(Arrays.equals(\n                Files.readAllBytes(Paths.get(source)),\n                Files.readAllBytes(Paths.get(decrypt))\n        ));\n\n        System.out.println(System.currentTimeMillis() - begin);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/JavaCipherService/src/main/java/ru/mai/Main.java b/JavaCipherService/src/main/java/ru/mai/Main.java
+--- a/JavaCipherService/src/main/java/ru/mai/Main.java	(revision 8d32d5c039ebd6547eeb53ab8f164d25a327f504)
++++ b/JavaCipherService/src/main/java/ru/mai/Main.java	(date 1710278610027)
+@@ -14,7 +14,7 @@
+ @Slf4j
+ public class Main {
+     public static void main(String[] args) throws IOException {
+-        byte[] key = {1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8};
++        byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
+ 
+         CipherService service = new CipherService(
+                 key,
