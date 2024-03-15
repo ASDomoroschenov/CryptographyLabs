@@ -9,7 +9,6 @@ public class ThreadTaskCipherOFB implements IThreadTask {
     private final byte[][] keyBlocks;
 
     public ThreadTaskCipherOFB(ICipher cipher, byte[] text, byte[] initialVector) {
-
         keyBlocks = new byte[text.length / cipher.getTextBlockSize()][];
         byte[] keyBlock = initialVector;
 

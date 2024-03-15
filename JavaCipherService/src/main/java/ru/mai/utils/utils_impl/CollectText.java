@@ -9,7 +9,6 @@ import java.util.concurrent.Future;
 public class CollectText implements ICollectText {
     @Override
     public byte[] collect(List<Future<PairIndexText>> futures, int textLength) throws ExecutionException, InterruptedException {
-
         byte[] result = new byte[textLength];
 
         while (!futures.isEmpty()) {

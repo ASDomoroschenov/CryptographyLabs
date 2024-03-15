@@ -5,6 +5,8 @@ import ru.mai.utils.utils_interface.IThreadTask;
 import ru.mai.cipher.cipher_interface.ICipher;
 import ru.mai.utils.utils_impl.BytesUtil;
 
+import java.util.Arrays;
+
 public class ThreadTaskCipherCTR implements IThreadTask {
     private final ICipher cipher;
     private final byte[][] counterBlocks;
@@ -22,7 +24,7 @@ public class ThreadTaskCipherCTR implements IThreadTask {
 
     private byte[] getNextCounter(byte[] counter) {
         byte[][] halfParts = BytesUtil.splitInHalf(counter);
-        byte[] rightPartCounter = BytesUtil.longToBytes(BytesUtil.bytesToLong(halfParts[1]) + 1, Long.BYTES);
+        byte[] rightPartCounter = BytesUtil.longToBytes(BytesUtil.bytesToLong(halfParts[1]) + 1, halfParts[1].length);
         return BytesUtil.mergePart(halfParts[0], rightPartCounter);
     }
 
