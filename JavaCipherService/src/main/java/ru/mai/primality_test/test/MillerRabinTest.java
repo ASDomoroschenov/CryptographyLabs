@@ -13,16 +13,15 @@ public class MillerRabinTest extends AbstractPrimalityTest {
         int step = 0;
 
         while (d.testBit(0)) {
-            d = d.divide(BigInteger.TWO);
+            d = d.shiftRight(1);
             step++;
         }
 
         BigInteger a = random.generateInBounds(BigInteger.TWO, number.subtract(BigInteger.ONE));
-        BigInteger x = a.modPow(d, number);
+        BigInteger x = ModuloService.fastPowMod(a, d, number);
 
-        while (x.equals(BigInteger.ONE) || x.equals(number.subtract(BigInteger.ONE))) {
-            a = random.generateInBounds(BigInteger.TWO, number.subtract(BigInteger.ONE));
-            x = ModuloService.fastPowMod(a, d, number);
+        if (x.equals(BigInteger.ONE) || x.equals(number.subtract(BigInteger.ONE))) {
+            return true;
         }
 
         for (int j = 0; j < step - 1 && x.equals(number.subtract(BigInteger.ONE)); j++) {
