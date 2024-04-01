@@ -1,9 +1,10 @@
 package ru.mai.utils;
 
+import ru.mai.primality_test.PrimalityTest;
+import ru.mai.service.ModuloService;
+
 import java.math.BigInteger;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 public class BigIntegerRandomGenerator {
     private final Random random;
@@ -12,8 +13,8 @@ public class BigIntegerRandomGenerator {
         random = new Random();
     }
 
-    public BigInteger generate(int numBits) {
-        return new BigInteger(random.nextInt(numBits), random);
+    public BigInteger generate(int bitLength) {
+        return new BigInteger(random.nextInt(bitLength), random);
     }
 
     public BigInteger generateInBounds(BigInteger lowerBound, BigInteger upperBound) {
@@ -23,24 +24,44 @@ public class BigIntegerRandomGenerator {
         do {
             randomBigInteger = new BigInteger(randomNumBits, random);
         } while (randomBigInteger.compareTo(lowerBound) < 0 ||
-                 randomBigInteger.compareTo(upperBound) > 0);
+                randomBigInteger.compareTo(upperBound) > 0);
 
         return randomBigInteger;
     }
 
-    public BigInteger generatePositive(int numBits) {
-        BigInteger randomBigInteger = new BigInteger(numBits, random);
+    public BigInteger generatePositive(int bitLength) {
+        BigInteger randomBigInteger = new BigInteger(bitLength, random);
         byte[] bytesRandomBigIntegerTemp = randomBigInteger.toByteArray();
         bytesRandomBigIntegerTemp[0] = (byte) (bytesRandomBigIntegerTemp[0] & ((1 << (Byte.SIZE)) - 1));
         randomBigInteger = new BigInteger(bytesRandomBigIntegerTemp);
         return randomBigInteger;
     }
 
-    public BigInteger generateNegative(int numBits) {
-        BigInteger randomBigInteger = new BigInteger(numBits, random);
+    public BigInteger generateNegative(int bitLength) {
+        BigInteger randomBigInteger = new BigInteger(bitLength, random);
         byte[] bytesRandomBigIntegerTemp = randomBigInteger.toByteArray();
         bytesRandomBigIntegerTemp[0] = (byte) (bytesRandomBigIntegerTemp[0] | (1 << (Byte.SIZE - 1)));
         randomBigInteger = new BigInteger(bytesRandomBigIntegerTemp);
         return randomBigInteger;
+    }
+
+    public BigInteger generatePrime(int bitLength, PrimalityTest test, double minProbability) {
+        BigInteger randomBigInteger;
+
+        do {
+            randomBigInteger = new BigInteger(bitLength, random);
+        } while (!test.isProbablyPrime(randomBigInteger, minProbability));
+
+        return randomBigInteger;
+    }
+
+    public BigInteger generateRelativelyPrime(BigInteger number) {
+        BigInteger relativelyPrime;
+
+        do {
+            relativelyPrime = generateInBounds(BigInteger.TWO, number.subtract(BigInteger.ONE));
+        } while (!ModuloService.gcd(number, relativelyPrime).equals(BigInteger.ONE));
+
+        return relativelyPrime;
     }
 }

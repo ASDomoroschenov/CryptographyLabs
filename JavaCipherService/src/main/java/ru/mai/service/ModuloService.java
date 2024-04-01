@@ -94,7 +94,7 @@ public class ModuloService {
             yPrev = tempY;
         }
 
-        return new BigInteger[] {number, x.add(moduloCopy).mod(moduloCopy), y};
+        return new BigInteger[] {number, x.add(moduloCopy).mod(moduloCopy), y}; // {gcd, reverse, y}
     }
 
     public static BigInteger fastPowMod(BigInteger number, BigInteger power, BigInteger modulo) {
