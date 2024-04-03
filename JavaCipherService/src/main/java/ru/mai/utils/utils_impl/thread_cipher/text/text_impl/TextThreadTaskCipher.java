@@ -10,9 +10,11 @@ import java.math.BigInteger;
 @AllArgsConstructor
 public class TextThreadTaskCipher implements ITextThreadTask {
     private RSA rsa;
+    private int sizeInputBlock;
+    private int sizeOutputBlock;
 
     @Override
-    public PairIndexText apply(byte[] text, BigInteger firstPartKey, BigInteger secondPartKey, int indexBegin, int countBlocks, int sizeInputBlock, int sizeOutputBlock) {
+    public PairIndexText apply(byte[] text, BigInteger firstPartKey, BigInteger secondPartKey, int indexBegin, int countBlocks) {
         byte[] result = new byte[countBlocks * sizeOutputBlock];
 
         for (int i = 0; i < sizeInputBlock * countBlocks; i += sizeInputBlock) {

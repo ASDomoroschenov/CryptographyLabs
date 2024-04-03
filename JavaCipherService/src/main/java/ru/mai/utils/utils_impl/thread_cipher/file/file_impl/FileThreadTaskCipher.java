@@ -37,7 +37,7 @@ public class FileThreadTaskCipher implements IFileThreadTask {
         return new TextThreadCipher(
                 sizeInputBlock,
                 sizeOutputBlock,
-                new TextThreadTaskCipher(rsa),
+                new TextThreadTaskCipher(rsa, sizeInputBlock, sizeOutputBlock),
                 new CollectText()
         ).cipher(text, firstPartKey, secondPartKey);
     }

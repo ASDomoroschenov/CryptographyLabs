@@ -65,7 +65,7 @@ public class RSA {
             return new TextThreadCipher(
                     sizeInputBlock,
                     sizeOutputBlock,
-                    new TextThreadTaskCipher(this),
+                    new TextThreadTaskCipher(this, sizeInputBlock, sizeOutputBlock),
                     new CollectText()
             ).cipher(padding.addPAdding(text, sizeInputBlock), e, N);
         } catch (Exception ex) {
@@ -104,7 +104,7 @@ public class RSA {
             return padding.removePadding(new TextThreadCipher(
                     sizeInputBlock,
                     sizeOutputBlock,
-                    new TextThreadTaskCipher(this),
+                    new TextThreadTaskCipher(this, sizeInputBlock, sizeOutputBlock),
                     new CollectText()
             ).cipher(text, d, N));
         } catch (Exception ex) {
