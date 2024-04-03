@@ -5,9 +5,9 @@ import org.testng.annotations.Test;
 
 import java.math.BigInteger;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
-public class WienerAttackTest {
+public class FermatAttackTest {
     @DataProvider(name = "testDataAttack")
     public Object[][] testDataText() {
         return new Object[][]{
@@ -19,10 +19,10 @@ public class WienerAttackTest {
 
     @Test(dataProvider = "testDataAttack")
     public void smartTest(BigInteger[] publicKeyAndD) {
-        WienerAttack wienerAttack = new WienerAttack();
+        FermatAttack fermatAttack = new FermatAttack();
         BigInteger e = publicKeyAndD[0];
         BigInteger N = publicKeyAndD[1];
-        BigInteger d = wienerAttack.attack(e, N).getLeft();
+        BigInteger d = fermatAttack.attack(e, N).getLeft();
         assertEquals(d, publicKeyAndD[2]);
     }
 }
