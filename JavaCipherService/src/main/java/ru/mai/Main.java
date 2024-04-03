@@ -3,7 +3,6 @@ package ru.mai;
 import lombok.extern.slf4j.Slf4j;
 import ru.mai.RSA.attack.FermatAttack;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 
