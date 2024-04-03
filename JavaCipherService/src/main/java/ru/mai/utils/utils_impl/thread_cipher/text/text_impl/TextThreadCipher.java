@@ -34,7 +34,7 @@ public class TextThreadCipher implements ITextThreadCipher {
         for (int i = 0; i < text.length; i += sizeInputBlock * countBlocks) {
             int finalI = i;
             int finalCountBlocks = i + sizeInputBlock * countBlocks < text.length ? countBlocks : (text.length - i) / sizeInputBlock;
-            futures.add(service.submit(() -> threadTask.apply(text, firstPartKey, secondPartKey, finalI, finalCountBlocks, sizeInputBlock, sizeOutputBlock)));
+            futures.add(service.submit(() -> threadTask.apply(text, firstPartKey, secondPartKey, finalI, finalCountBlocks)));
         }
 
         byte[] result;

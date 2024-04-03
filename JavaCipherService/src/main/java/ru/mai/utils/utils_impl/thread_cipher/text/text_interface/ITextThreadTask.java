@@ -6,5 +6,5 @@ import java.math.BigInteger;
 import java.util.concurrent.ExecutionException;
 
 public interface ITextThreadTask {
-    PairIndexText apply(byte[] text, BigInteger firstPartKey, BigInteger secondPartKey, int indexBegin, int countBlocks, int sizeInputBlock, int sizeOutputBlock) throws ExecutionException, InterruptedException;
+    PairIndexText apply(byte[] text, BigInteger firstPartKey, BigInteger secondPartKey, int indexBegin, int countBlocks) throws ExecutionException, InterruptedException;
 }
