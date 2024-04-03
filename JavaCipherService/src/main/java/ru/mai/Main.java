@@ -22,7 +22,7 @@ public class Main {
         BigInteger N = keys[1][1];
 
         try {
-            String pathToInputFile = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/file.txt";
+            String pathToInputFile = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/image.jpg";
             String encryptFile = rsa.encryptFile(pathToInputFile, e, N);
             String decryptFile = rsa.decryptFile(encryptFile, d, N);
 
