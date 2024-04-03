@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mai.RSA.RSA;
 import ru.mai.utils.utils_impl.thread_cipher.file.file_interface.IFileThreadTask;
+import ru.mai.utils.utils_impl.thread_cipher.text.text_impl.CollectText;
+import ru.mai.utils.utils_impl.thread_cipher.text.text_impl.TextThreadCipher;
+import ru.mai.utils.utils_impl.thread_cipher.text.text_impl.TextThreadTaskCipher;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 @Slf4j
 @AllArgsConstructor
@@ -16,7 +18,7 @@ public class FileThreadTaskCipher implements IFileThreadTask {
     private RSA rsa;
 
     @Override
-    public byte[] apply(String pathToInputFile, long skipValue, long sizePartBytesThread, BigInteger firstPartKey, BigInteger secondPartKey) {
+    public byte[] apply(String pathToInputFile, long skipValue, long sizePartBytesThread, BigInteger firstPartKey, BigInteger secondPartKey, int sizeInputBlock, int sizeOutputBlock) throws Exception {
         byte[] text = new byte[(int) sizePartBytesThread];
 
         try (RandomAccessFile file = new RandomAccessFile(pathToInputFile, "r")) {
@@ -29,10 +31,14 @@ public class FileThreadTaskCipher implements IFileThreadTask {
                 text = trimText;
             }
         } catch (IOException ex) {
-            log.error(ex.getMessage());
-            log.error(Arrays.toString(ex.getStackTrace()));
+            throw new IOException(ex);
         }
 
-        return rsa.encrypt(text, firstPartKey, secondPartKey);
+        return new TextThreadCipher(
+                sizeInputBlock,
+                sizeOutputBlock,
+                new TextThreadTaskCipher(rsa),
+                new CollectText()
+        ).cipher(text, firstPartKey, secondPartKey);
     }
 }

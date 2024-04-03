@@ -18,7 +18,7 @@ public class TextThreadTaskCipher implements ITextThreadTask {
         for (int i = 0; i < sizeInputBlock * countBlocks; i += sizeInputBlock) {
             byte[] block = new byte[sizeInputBlock + 1];
             System.arraycopy(text, indexBegin + i, block, 1, sizeInputBlock);
-            block = rsa.cipherTextBlock(block, firstPartKey, secondPartKey, sizeOutputBlock);
+            block = rsa.cipherConversionBlock(block, firstPartKey, secondPartKey, sizeOutputBlock);
             System.arraycopy(block, 0, result, (i / sizeInputBlock) * sizeOutputBlock, sizeOutputBlock);
         }
 

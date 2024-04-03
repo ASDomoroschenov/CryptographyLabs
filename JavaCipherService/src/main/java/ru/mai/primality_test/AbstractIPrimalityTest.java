@@ -10,7 +10,7 @@ public abstract class AbstractIPrimalityTest implements IPrimalityTest {
     @Override
     public boolean isProbablyPrime(BigInteger number, double minProbability) {
         if (number.compareTo(BigInteger.ONE) <= 0 || minProbability < 0.5 || minProbability >= 1.0) {
-            throw new IllegalArgumentException("Illegal arguments prime test");
+            throw new IllegalArgumentException("Illegal arguments prime file");
         }
 
         if (number.equals(BigInteger.TWO)) {

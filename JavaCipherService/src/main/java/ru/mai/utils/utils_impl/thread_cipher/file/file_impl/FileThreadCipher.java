@@ -9,38 +9,45 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 
 @Slf4j
 @AllArgsConstructor
 public class FileThreadCipher implements IFileThreadCipher {
-    private int blockSize;
+    private int sizeInputBlock;
+    private int sizeOutputBlock;
     private IFileThreadTask threadTask;
 
     @Override
-    public String cipher(String pathToInputFile, BigInteger firstPartKey, BigInteger secondPartKey) {
+    public String cipher(String pathToInputFile, String pathToOutputFile, BigInteger firstPartKey, BigInteger secondPartKey) throws Exception {
         int availableProcessors = Runtime.getRuntime().availableProcessors();
         ExecutorService service = Executors.newFixedThreadPool(availableProcessors);
         List<Future<byte[]>> futures = new ArrayList<>();
 
         try (RandomAccessFile file = new RandomAccessFile(pathToInputFile, "r")) {
             long skipValue = 0;
-            long sizePartsThread = ((file.length() / blockSize) + availableProcessors - 1) / availableProcessors;
-            long sizePartBytesThread = sizePartsThread * blockSize;
+            long sizePartsThread = ((file.length() / sizeInputBlock) + availableProcessors - 1) / availableProcessors;
+            long sizePartBytesThread = sizePartsThread * sizeInputBlock;
 
             while (skipValue < file.length()) {
                 long finalSkipValue = skipValue;
-                futures.add(service.submit(() -> threadTask.apply(pathToInputFile, finalSkipValue, sizePartBytesThread, firstPartKey, secondPartKey)));
+                futures.add(service.submit(() -> threadTask.apply(pathToInputFile, finalSkipValue, sizePartBytesThread, firstPartKey, secondPartKey, sizeInputBlock, sizeOutputBlock)));
                 skipValue += sizePartBytesThread;
             }
         } catch (IOException ex) {
-            log.error(ex.getMessage());
-            log.error(Arrays.toString(ex.getStackTrace()));
-        }
+            throw new Exception(ex);
+        } finally {
+            service.shutdown();
 
-        String pathToOutputFile = "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/test.txt";
+            try {
+                if (!service.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
+                    service.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                service.shutdownNow();
+            }
+        }
 
         try (RandomAccessFile file = new RandomAccessFile(pathToOutputFile, "rw")) {
             for (Future<byte[]> future : futures) {
@@ -48,18 +55,7 @@ public class FileThreadCipher implements IFileThreadCipher {
                 file.write(text);
             }
         } catch (IOException | ExecutionException | InterruptedException ex) {
-            log.error(ex.getMessage());
-            log.error(Arrays.toString(ex.getStackTrace()));
-        }
-
-        service.shutdown();
-
-        try {
-            if (!service.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
-                service.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            service.shutdownNow();
+            throw new Exception(ex);
         }
 
         return pathToOutputFile;

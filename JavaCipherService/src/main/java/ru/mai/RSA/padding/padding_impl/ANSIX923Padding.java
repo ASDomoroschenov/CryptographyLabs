@@ -51,7 +51,7 @@ public class ANSIX923Padding implements IPadding {
     }
 
     @Override
-    public String addPAdding(String pathToFile, int textBlockSize) throws IllegalArgumentException, IOException {
+    public String addPAdding(String pathToFile, int textBlockSize) throws Exception {
         String pathToAddPaddingFile = getOutputFileName(pathToFile, "_add_padding");
         FileUtils.copyFile(new File(pathToFile), new File(pathToAddPaddingFile));
 
@@ -62,13 +62,15 @@ public class ANSIX923Padding implements IPadding {
             byte[] padding = new byte[valuePadding];
             padding[padding.length - 1] = valuePadding;
             paddingFile.write(padding);
+        } catch (IOException ex) {
+            throw new Exception(ex);
         }
 
         return pathToAddPaddingFile;
     }
 
     @Override
-    public String removePadding(String pathToFile) throws IllegalArgumentException, IOException {
+    public String removePadding(String pathToFile) throws Exception {
         String pathToRemovePaddingFile = getOutputFileName(pathToFile, "_remove_padding");
         byte valuePadding = 0;
         byte[] buffer = null;
@@ -77,12 +79,16 @@ public class ANSIX923Padding implements IPadding {
             inputFile.seek(inputFile.length() - 1);
             valuePadding = inputFile.readByte();
             buffer = new byte[(int) (inputFile.length() - valuePadding)];
+        } catch (IOException ex) {
+            throw new Exception(ex);
         }
 
         try (RandomAccessFile inputFile = new RandomAccessFile(pathToFile, "r");
              RandomAccessFile paddingFile = new RandomAccessFile(pathToRemovePaddingFile, "rw")) {
             inputFile.read(buffer);
             paddingFile.write(buffer);
+        } catch (IOException ex ) {
+            throw new Exception(ex);
         }
 
         return pathToRemovePaddingFile;

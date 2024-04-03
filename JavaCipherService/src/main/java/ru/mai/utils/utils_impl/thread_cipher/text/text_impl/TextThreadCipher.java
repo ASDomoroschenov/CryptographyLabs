@@ -3,13 +3,12 @@ package ru.mai.utils.utils_impl.thread_cipher.text.text_impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.mai.utils.utils_impl.thread_cipher.text.PairIndexText;
+import ru.mai.utils.utils_impl.thread_cipher.text.text_interface.ICollectText;
 import ru.mai.utils.utils_impl.thread_cipher.text.text_interface.ITextThreadCipher;
 import ru.mai.utils.utils_impl.thread_cipher.text.text_interface.ITextThreadTask;
-import ru.mai.utils.utils_impl.thread_cipher.text.text_interface.ICollectText;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -22,7 +21,7 @@ public class TextThreadCipher implements ITextThreadCipher {
     private ICollectText collectText;
 
     @Override
-    public byte[] cipher(byte[] text, BigInteger firstPartKey, BigInteger secondPartKey) throws IllegalArgumentException {
+    public byte[] cipher(byte[] text, BigInteger firstPartKey, BigInteger secondPartKey) throws Exception {
         if (text == null) {
             throw new IllegalArgumentException("Illegal bytes text");
         }
@@ -38,13 +37,12 @@ public class TextThreadCipher implements ITextThreadCipher {
             futures.add(service.submit(() -> threadTask.apply(text, firstPartKey, secondPartKey, finalI, finalCountBlocks, sizeInputBlock, sizeOutputBlock)));
         }
 
-        byte[] result = null;
+        byte[] result;
 
         try {
             result = collectText.collect(futures, (text.length / sizeInputBlock) * sizeOutputBlock);
         } catch (InterruptedException | ExecutionException ex) {
-            log.error(ex.getMessage());
-            log.error(Arrays.toString(ex.getStackTrace()));
+            throw new Exception(ex);
         } finally {
             service.shutdown();
 
