@@ -1,16 +1,10 @@
 package ru.mai;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.mai.RSA.attack.FermatAttack;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
 
 @Slf4j
 public class Main {
-    public static void main(String[] args) throws IOException {
-        FermatAttack fermatAttack = new FermatAttack();
-        System.out.println(Arrays.toString(fermatAttack.attack(new BigInteger("5"), new BigInteger("21"))));
+    public static void main(String[] args) {
+        System.out.println("Hello world");
     }
 }
