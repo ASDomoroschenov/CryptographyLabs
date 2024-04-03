@@ -9,8 +9,8 @@ import java.util.Arrays;
 
 @Slf4j
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         FermatAttack fermatAttack = new FermatAttack();
-        System.out.println(Arrays.toString(fermatAttack.attack(new BigInteger("5"), new BigInteger("21"))));
+        System.out.println(Arrays.toString(fermatAttack.attack(new BigInteger("7"), new BigInteger("21"))));
     }
 }
