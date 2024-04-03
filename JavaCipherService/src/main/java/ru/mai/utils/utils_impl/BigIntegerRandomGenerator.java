@@ -1,6 +1,6 @@
-package ru.mai.utils;
+package ru.mai.utils.utils_impl;
 
-import ru.mai.primality_test.PrimalityTest;
+import ru.mai.primality_test.IPrimalityTest;
 import ru.mai.service.ModuloService;
 
 import java.math.BigInteger;
@@ -45,11 +45,11 @@ public class BigIntegerRandomGenerator {
         return randomBigInteger;
     }
 
-    public BigInteger generatePrime(int bitLength, PrimalityTest test, double minProbability) {
+    public BigInteger generatePrime(int bitLength, IPrimalityTest test, double minProbability) {
         BigInteger randomBigInteger;
 
         do {
-            randomBigInteger = new BigInteger(bitLength, random);
+            randomBigInteger = generatePositive(bitLength);
         } while (!test.isProbablyPrime(randomBigInteger, minProbability));
 
         return randomBigInteger;

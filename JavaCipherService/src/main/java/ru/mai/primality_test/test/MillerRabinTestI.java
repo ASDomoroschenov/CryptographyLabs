@@ -1,12 +1,12 @@
 package ru.mai.primality_test.test;
 
-import ru.mai.primality_test.AbstractPrimalityTest;
+import ru.mai.primality_test.AbstractIPrimalityTest;
 import ru.mai.service.ModuloService;
-import ru.mai.utils.BigIntegerRandomGenerator;
+import ru.mai.utils.utils_impl.BigIntegerRandomGenerator;
 
 import java.math.BigInteger;
 
-public class MillerRabinTest extends AbstractPrimalityTest {
+public class MillerRabinTestI extends AbstractIPrimalityTest {
     @Override
     protected boolean singleIteration(BigInteger number, BigIntegerRandomGenerator random) {
         BigInteger d = number.subtract(BigInteger.ONE);

@@ -1,10 +1,10 @@
 package ru.mai.primality_test;
 
-import ru.mai.utils.BigIntegerRandomGenerator;
+import ru.mai.utils.utils_impl.BigIntegerRandomGenerator;
 
 import java.math.BigInteger;
 
-public abstract class AbstractPrimalityTest implements PrimalityTest {
+public abstract class AbstractIPrimalityTest implements IPrimalityTest {
     protected abstract boolean singleIteration(BigInteger number, BigIntegerRandomGenerator random);
 
     @Override
