@@ -2,7 +2,6 @@ package ru.mai;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.mai.RSA.RSA;
-import ru.mai.RSA.stream_mode.CTR.CTRMode;
 import ru.mai.RSA.stream_mode.StreamRSA;
 
 import java.io.IOException;

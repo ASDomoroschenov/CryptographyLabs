@@ -1,7 +1,5 @@
 package ru.mai.service;
 
-import org.apache.commons.lang3.tuple.Triple;
-
 import java.math.BigInteger;
 
 public class ModuloService {
