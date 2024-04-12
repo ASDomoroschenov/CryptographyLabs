@@ -1,6 +1,13 @@
 package ru.mai.rijndael;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GF {
+    private static final String ILLEGAL_MODULO_EXCEPTION = "Illegal modulo";
+
+    private GF() {}
+
     public static byte sum(byte firstPolynomial, byte secondPolynomial) {
         return (byte) (firstPolynomial ^ secondPolynomial);
     }
@@ -17,26 +24,30 @@ public class GF {
         return resMultiplication;
     }
 
-    private static byte mod(char polynomial, byte modulo) {
-        int leftShiftValue = 6;
+    public static byte mod(char polynomial, char modulo) {
+        byte sizeModulo = getSize(modulo);
+        int leftShiftValue = 16;
 
-        while (leftShiftValue >= 0) {
-            if (((polynomial >> (Byte.SIZE + leftShiftValue)) & 1) == 1) {
-                polynomial ^= (char) (modulo << leftShiftValue);
-                polynomial &= (char) (~(1 << (Byte.SIZE + leftShiftValue)));
+        while (leftShiftValue != 0) {
+            if (((polynomial >> leftShiftValue) & 1) == 1) {
+                polynomial ^= (char) (modulo << (leftShiftValue - sizeModulo + 1));
             }
 
-            --leftShiftValue;
+            leftShiftValue--;
         }
 
         return (byte) polynomial;
     }
 
-    public static byte multiplicationModulo(byte firstPolynomial, byte secondPolynomial, byte modulo) {
+    public static byte multiplicationModulo(byte firstPolynomial, byte secondPolynomial, char modulo) {
+        if ((modulo >> (Byte.SIZE + 1)) != 0) {
+            throw new IllegalArgumentException(ILLEGAL_MODULO_EXCEPTION);
+        }
+
         return mod(multiplication(firstPolynomial, secondPolynomial), modulo);
     }
 
-    public static byte invert(byte polynomial, byte modulo) {
+    public static byte invert(byte polynomial, char modulo) {
         int power = (1 << Byte.SIZE) - 2;
         byte result = 1;
 
@@ -47,6 +58,32 @@ public class GF {
 
             polynomial = multiplicationModulo(polynomial, polynomial, modulo);
             power >>= 1;
+        }
+
+        return result;
+    }
+
+    public static boolean isIrreducible(char polynomial) {
+        if ((polynomial >> (Byte.SIZE + 1)) != 0) {
+            throw new IllegalArgumentException(ILLEGAL_MODULO_EXCEPTION);
+        }
+
+        for (char i = 2; i < (1 << (Byte.SIZE / 2 + 1)); i++) {
+            if (mod(polynomial, i) == 0) {
+                return false;
+            }
+        }
+
+        return (polynomial >> (Byte.SIZE + 1)) == 0;
+    }
+
+    public static List<Character> getIrreducible() {
+        List<Character> result = new ArrayList<>();
+
+        for (char i = 1 << Byte.SIZE; i < 1 << (Byte.SIZE + 1); i++) {
+            if (isIrreducible(i)) {
+                result.add(i);
+            }
         }
 
         return result;
@@ -69,48 +106,4 @@ public class GF {
 
         return size;
     }
-
-    public static byte newMod(char polynomial, char modulo) {
-        byte sizeModulo = getSize(modulo);
-        int leftShiftValue = 16;
-
-        while (leftShiftValue != 0) {
-            if (((polynomial >> leftShiftValue) & 1) == 1) {
-                polynomial ^= (char) (modulo << (Math.abs(leftShiftValue - sizeModulo + 1)));
-            }
-
-            leftShiftValue--;
-        }
-
-        return (byte) polynomial;
-    }
-
-    public static boolean isIrreducible(char polynomial) {
-        for (char i = 2; i < (1 << (Byte.SIZE / 2)); i++) {
-            if (newMod(polynomial, i) == 0) {
-                return false;
-            }
-        }
-
-        return (polynomial >> (Byte.SIZE + 1)) == 0;
-    }
-
-    public static void printBits(char item) {
-        for (int i = 0; i < Character.SIZE; i++) {
-            System.out.print((item >> (Character.SIZE - i - 1)) & 1);
-        }
-        System.out.println();
-    }
-
-    public static void printBits(byte item) {
-        for (int i = 0; i < Byte.SIZE; i++) {
-            System.out.print((item >> (Byte.SIZE - i - 1)) & 1);
-        }
-        System.out.println();
-    }
 }
-
-
-//111
-//100
-//
