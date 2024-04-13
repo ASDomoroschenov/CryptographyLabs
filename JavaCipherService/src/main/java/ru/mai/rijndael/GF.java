@@ -89,7 +89,7 @@ public class GF {
         return result;
     }
 
-    private static char resetFirstBitsChar(char charItem, int countBits) {
+    public static char resetFirstBitsChar(char charItem, int countBits) {
         for (int i = 0; i < countBits; i++) {
             charItem &= (char) ~(1 << (Character.SIZE - i - 1));
         }
