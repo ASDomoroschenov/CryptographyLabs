@@ -11,9 +11,9 @@ public class RijndaelTest {
             (byte) 0x15, (byte) 0xd2, (byte) 0x15, (byte) 0x4f,
             (byte) 0x16, (byte) 0xa6, (byte) 0x88, (byte) 0x3c
     };
-    private static final Rijndael RIJNDAEL128 = new Rijndael(KEY, 128, 128, (char) 0b100011011);
-    private static final Rijndael RIJNDAEL192 = new Rijndael(KEY, 192, 128, (char) 0b100011011);
-    private static final Rijndael RIJNDAEL256 = new Rijndael(KEY, 256, 128, (char) 0b100011011);
+    private static final Rijndael RIJNDAEL128 = new RijndaelImpl(KEY, 128, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
+    private static final Rijndael RIJNDAEL192 = new RijndaelImpl(KEY, 192, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
+    private static final Rijndael RIJNDAEL256 = new RijndaelImpl(KEY, 256, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
 
     @Test
     public void testSubBytes() {

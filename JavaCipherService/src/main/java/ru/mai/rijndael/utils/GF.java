@@ -1,4 +1,4 @@
-package ru.mai.rijndael;
+package ru.mai.rijndael.utils;
 
 import java.util.ArrayList;
 import java.util.List;
