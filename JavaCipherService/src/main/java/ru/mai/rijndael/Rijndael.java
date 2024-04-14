@@ -3,11 +3,10 @@ package ru.mai.rijndael;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Rijndael {
-    private static Map<Pair<Integer, Integer>, Integer> mapRounds = Map.of(
+    private static final Map<Pair<Integer, Integer>, Integer> MAP_ROUNDS = Map.of(
             Pair.of(128, 128), 10,
             Pair.of(192, 128), 12,
             Pair.of(256, 128), 14,
@@ -20,67 +19,104 @@ public class Rijndael {
     );
     private final int countRounds;
     private final char modulo;
-    private final byte[][] sBox;
-    private byte[][] invertSBox;
+    private final byte[] sBox;
+    private final byte[] invertSBox;
+    private final KeyGenerator keyGenerator;
     private final int countBitsBlock;
-    private final int countBitsKey;
-    private byte[][] key;
 
-    public Rijndael(byte[][] key, int countBitsBlock, int countBitsKey, char irreduciblePolynomial) {
-        this.key = key;
-        this.countBitsBlock = countBitsBlock;
-        this.countBitsKey = countBitsKey;
-        this.countRounds = mapRounds.get(Pair.of(countBitsBlock, countBitsKey));
+    public Rijndael(byte[] key, int countBitsBlock, int countBitsKey, char irreduciblePolynomial) {
+        this.countRounds = MAP_ROUNDS.get(Pair.of(countBitsBlock, countBitsKey));
         this.modulo = irreduciblePolynomial;
-        sBox = generateSBox();
+        this.sBox = generateSBox();
+        this.invertSBox = generateInvertSBox(this.sBox);
+        this.keyGenerator = new KeyGenerator(key, countBitsKey, countBitsBlock, countRounds);
+        this.countBitsBlock = countBitsBlock;
     }
 
-    public void generateKey() {
-
+    public byte[] encrypt(byte[] text) {
+        return null;
     }
 
-    public void cipher() {
-        for (int i = 0; i < countRounds; i++) {
-            //TODO
+    public byte[] decrypt(byte[] text) {
+        return null;
+    }
+
+    public byte[] encryptBlock(byte[] text) {
+        byte[][] state = convertArrayToMatrix(text, 4, countBitsBlock / 32);
+        state = addRoundKey(state, keyGenerator.getRoundKey(0));
+
+        for (int i = 1; i < countRounds; i++) {
+            state = subBytes(state);
+            state = shiftRows(state);
+            state = mixColumns(state);
+            state = addRoundKey(state, keyGenerator.getRoundKey(i));
         }
-    }
 
-    public byte[][] Round(byte[][] state, byte[][] roundKey) {
         state = subBytes(state);
         state = shiftRows(state);
-        state = mixColumns(state);
-        state = addRoundKey(state, roundKey);
-        return state;
+        state = addRoundKey(state, keyGenerator.getRoundKey(countRounds));
+
+        return convertMatrixToArray(state);
     }
 
-    public byte[][] subBytes(byte[][] state) {
-        byte[][] result = new byte[state.length][state[0].length];
+    public byte[] decryptBlock(byte[] text) {
+        byte[][] state = convertArrayToMatrix(text, 4, countBitsBlock / 32);
 
-        for (int i = 0; i < state.length; i++) {
-            for(int j = 0; j < state[i].length; j++) {
-                byte row = (byte) ((state[i][j] & 0b11110000) >> Byte.SIZE / 2);
-                byte col = (byte) (state[i][j] & 0b00001111);
-                result[i][j] = sBox[row][col];
+        state = addRoundKey(state, keyGenerator.getRoundKey(countRounds));
+        state = invShiftRows(state);
+        state = invSubBytes(state);
+
+        for (int i = countRounds - 1; i >= 1; i--) {
+            state = addRoundKey(state, keyGenerator.getRoundKey(i));
+            state = invMixColumns(state);
+            state = invShiftRows(state);
+            state = invSubBytes(state);
+        }
+
+        state = addRoundKey(state, keyGenerator.getRoundKey(0));
+
+        return convertMatrixToArray(state);
+    }
+
+    public byte[][] convertArrayToMatrix(byte[] array, int countRows, int countColumns) {
+        byte[][] matrix = new byte[countRows][countColumns];
+
+        for (int i = 0; i < countRows; i++) {
+            System.arraycopy(array, i * countColumns, matrix[i], 0, countColumns);
+        }
+
+        return matrix;
+    }
+
+    public byte[] convertMatrixToArray(byte[][] matrix) {
+        byte[] result = new byte[matrix.length * matrix[0].length];
+        int index = 0;
+
+        for (byte[] row : matrix) {
+            for (byte itemRow : row) {
+                result[index++] = itemRow;
             }
         }
 
         return result;
     }
 
-    public void printBits(byte number) {
-        for (int i = 0; i < Byte.SIZE; i++) {
-            System.out.print((number >> (Byte.SIZE - i - 1)) & 1);
-        }
-        System.out.println();
+    public byte[][] subBytes(byte[][] state) {
+        return subBytesWrap(state, sBox);
     }
 
-    public byte[] subBytesArray(byte[] array) {
-        byte[] result = new byte[array.length];
+    public byte[][] invSubBytes(byte[][] state) {
+        return subBytesWrap(state, invertSBox);
+    }
 
-        for (int i = 0; i < array.length; i++) {
-            int row = array[i] >> (Byte.SIZE / 2);
-            int col = array[i] << (Byte.SIZE / 2) >> (Byte.SIZE / 2);
-            result[i] = sBox[row][col];
+    public byte[][] subBytesWrap(byte[][] state, byte[] sArray) {
+        byte[][] result = new byte[state.length][state[0].length];
+
+        for (int i = 0; i < state.length; i++) {
+            for (int j = 0; j < state[i].length; j++) {
+                int indexSBox = state[i][j] < 0 ? 256 + state[i][j] : state[i][j];
+                result[i][j] = sArray[indexSBox];
+            }
         }
 
         return result;
@@ -96,12 +132,44 @@ public class Rijndael {
         return result;
     }
 
+    public byte[][] invShiftRows(byte[][] state) {
+        byte[][] result = new byte[state.length][state[0].length];
+
+        for (int i = 0; i < state.length; i++) {
+            result[i] = shiftRight(state[i], i);
+        }
+
+        return result;
+    }
+
     public byte[][] mixColumns(byte[][] state) {
+        byte[][] matrix = new byte[][]{
+                {0x02, 0x03, 0x01, 0x01},
+                {0x01, 0x02, 0x03, 0x01},
+                {0x01, 0x01, 0x02, 0x03},
+                {0x03, 0x01, 0x01, 0x02}
+        };
+
+        return mixColumnsWrap(state, matrix);
+    }
+
+    public byte[][] invMixColumns(byte[][] state) {
+        byte[][] matrix = new byte[][]{
+                {0x0e, 0x0b, 0x0d, 0x09},
+                {0x09, 0x0e, 0x0b, 0x0d},
+                {0x0d, 0x09, 0x0e, 0x0b},
+                {0x0b, 0x0d, 0x09, 0x0e}
+        };
+
+        return mixColumnsWrap(state, matrix);
+    }
+
+    private byte[][] mixColumnsWrap(byte[][] state, byte[][] matrix) {
         byte[][] result = new byte[state.length][state[0].length];
 
         for (int col = 0; col < state[0].length; col++) {
-            byte[] stateColumn = new byte[] {state[0][col], state[1][col], state[2][col], state[3][col]};
-            byte[] resultMultiplication = mibColumn(stateColumn);
+            byte[] stateColumn = new byte[]{state[0][col], state[1][col], state[2][col], state[3][col]};
+            byte[] resultMultiplication = multiplicationPolynomials(stateColumn, matrix);
             result[0][col] = resultMultiplication[0];
             result[1][col] = resultMultiplication[1];
             result[2][col] = resultMultiplication[2];
@@ -111,15 +179,9 @@ public class Rijndael {
         return result;
     }
 
-    private byte[] mibColumn(byte[] column) {
+    private byte[] multiplicationPolynomials(byte[] column, byte[][] matrix) {
         int sizePolynomial = column.length;
         byte[] result = new byte[sizePolynomial];
-        byte[][] matrix = new byte[][] {
-                {2, 3, 1, 1},
-                {1, 2, 3, 1},
-                {1, 1, 2, 3},
-                {3, 1, 1, 2}
-        };
 
         for (int i = 0; i < matrix.length; i++) {
             byte sum = 0;
@@ -146,8 +208,8 @@ public class Rijndael {
         return result;
     }
 
-    public byte[][] generateSBox() {
-        byte[] aMatrix = new byte[] {
+    public byte[] generateSBox() {
+        byte[] aMatrix = new byte[]{
                 (byte) 0b10001111,
                 (byte) 0b11000111,
                 (byte) 0b11100011,
@@ -158,17 +220,24 @@ public class Rijndael {
                 (byte) 0b00011111
         };
         byte f = 0x63;
-        byte[][] result = new byte[16][16];
+        byte[] result = new byte[256];
 
         for (int i = 0; i < 256; i++) {
-            result[i / 16][i % 16] = (byte) (multiplyMatrixToVector(aMatrix, GF.invert((byte) i, modulo)) ^ f);
+            result[i] = (byte) (multiplyMatrixToVector(aMatrix, GF.invert((byte) i, modulo)) ^ f);
         }
 
         return result;
     }
 
-    public void keyExpansion() {
+    public byte[] generateInvertSBox(byte[] array) {
+        byte[] result = new byte[256];
 
+        for (int i = 0; i < 256; i++) {
+            int index = array[i] < 0 ? 256 + array[i] : array[i];
+            result[index] = (byte) i;
+        }
+
+        return result;
     }
 
     private byte multiplyMatrixToVector(byte[] matrix, byte vector) {
@@ -213,36 +282,102 @@ public class Rijndael {
         return result;
     }
 
-    public byte[][] generateRoundKey(byte[][] prevRoundKey) {
-        byte[] Rcon = new byte[prevRoundKey.length];
-        byte[][] roundKey = new byte[prevRoundKey.length][prevRoundKey[0].length];
+    public class KeyGenerator {
+        private final byte[][] key;
+        private final int sizeKeyBits;
+        private final int sizeBlockBits;
+        private final int countRounds;
+        private final byte[][] keyExpanded;
 
-        byte[][] prevAndCurrentKey = new byte[prevRoundKey.length][prevRoundKey[0].length * 2];
-
-        for (int i = 0; i < prevRoundKey.length; i++) {
-            System.arraycopy(prevRoundKey[i], 0, prevAndCurrentKey[i], 0, prevRoundKey[i].length);
+        public KeyGenerator(byte[] key, int sizeKeyBits, int sizeBlockBits, int countRounds) {
+            this.key = convertArrayToMatrix(key, 4, sizeKeyBits / 32);
+            this.sizeKeyBits = sizeKeyBits;
+            this.sizeBlockBits = sizeBlockBits;
+            this.countRounds = countRounds;
+            this.keyExpanded = keyExpansion();
         }
 
-        for (int i = prevRoundKey.length; i < prevAndCurrentKey[0].length; i++) {
-            byte[] column = new byte[] {prevRoundKey[0][i - 1], prevRoundKey[1][i - 1], prevRoundKey[2][i - 1], prevRoundKey[3][i - 1]};
-            byte[] shiftColumn = shiftLeft(column, 1);
-            byte[] subColumn = subBytesArray(shiftColumn);
-            byte[] temp = new byte[prevRoundKey.length];
-
-            for (int j = 0; j < prevRoundKey.length; j++) {
-                temp[j] = (byte) (prevRoundKey[j][i - 4] ^ subColumn[j] ^ Rcon[j]);
+        public byte getRConstant(int index) {
+            if (index == 0) {
+                return 0x00;
+            }
+            if (index == 1) {
+                return 0x01;
+            }
+            if (index == 2) {
+                return 0x02;
             }
 
-            prevAndCurrentKey[0][i] = temp[0];
-            prevAndCurrentKey[1][i] = temp[1];
-            prevAndCurrentKey[2][i] = temp[2];
-            prevAndCurrentKey[3][i] = temp[3];
+            return GF.multiplicationModulo((byte) 0x02, getRConstant(index - 1), modulo);
         }
 
-        for (int i = 0; i < prevRoundKey.length; i++) {
-            System.arraycopy(prevAndCurrentKey[i], prevRoundKey.length, roundKey[i], 0, prevRoundKey[0].length);
+        public byte[][] keyExpansion() {
+            int indexSBox;
+            int sizeColumnBlock = sizeBlockBits / 32;
+            int sizeColumnKey = sizeKeyBits / 32;
+            byte[][] result = new byte[4][sizeColumnBlock * (countRounds + 1)];
+
+            for (int i = 0; i < 4; i++) {
+                System.arraycopy(key[i], 0, result[i], 0, key[i].length);
+            }
+
+            for (int j = sizeColumnKey; j < sizeColumnBlock * (countRounds + 1); j++) {
+                if (j % sizeColumnKey == 0) {
+                    indexSBox = result[1][j - 1] < 0 ?
+                                256 + result[1][j - 1] :
+                                result[1][j - 1];
+
+                    result[0][j] = (byte) (result[0][j - sizeColumnKey] ^ sBox[indexSBox] ^ getRConstant(j / sizeColumnKey));
+
+                    for (int i = 1; i < 4; i++) {
+                        indexSBox = result[(i + 1) % 4][j - 1] < 0 ?
+                                    256 + result[(i + 1) % 4][j - 1] :
+                                    result[(i + 1) % 4][j - 1];
+
+                        result[i][j] = (byte) (result[i][j - sizeColumnKey] ^ sBox[indexSBox]);
+                    }
+                } else if (sizeColumnKey > 6) {
+                    if (j % sizeColumnKey == 4) {
+                        for (int i = 0; i < 4; i++) {
+                            indexSBox = result[i][j - 1] < 0 ?
+                                        256 + result[i][j - 1] :
+                                        result[i][j - 1];
+
+                            result[i][j] = (byte) (result[i][j - sizeColumnKey] ^ sBox[indexSBox]);
+                        }
+                    } else {
+                        for (int i = 0; i < 4; i++) {
+                            result[i][j] = (byte) (result[i][j - sizeColumnKey] ^ result[i][j - 1]);
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < 4; i++) {
+                        result[i][j] = (byte) (result[i][j - sizeColumnKey] ^ result[i][j - 1]);
+                    }
+                }
+            }
+
+            return result;
         }
 
-        return roundKey;
+        public byte[][] getRoundKey(int indexRound) {
+            int sizeColumnBlock = sizeBlockBits / 32;
+            byte[][] result = new byte[4][sizeColumnBlock];
+
+            for (int i = 0; i < 4; i++) {
+                System.arraycopy(keyExpanded[i], sizeColumnBlock * indexRound, result[i], 0, sizeColumnBlock);
+            }
+
+            return result;
+        }
+    }
+
+    public void printMatrix(byte[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(String.format("0x%x ", matrix[i][j]));
+            }
+            System.out.println();
+        }
     }
 }
