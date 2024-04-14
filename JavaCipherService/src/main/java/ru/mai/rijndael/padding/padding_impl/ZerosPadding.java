@@ -35,7 +35,7 @@ public class ZerosPadding implements IPadding {
 
     @Override
     public String addPAdding(String pathToFile, int textBlockSize) throws IllegalArgumentException, IOException {
-        String pathToAddPaddingFile = getOutputFileName(pathToFile, "_add_padding");
+        String pathToAddPaddingFile = getOutputFileName(pathToFile);
         FileUtils.copyFile(new File(pathToFile), new File(pathToAddPaddingFile));
 
         try (RandomAccessFile inputFile = new RandomAccessFile(pathToFile, "r");
@@ -50,14 +50,14 @@ public class ZerosPadding implements IPadding {
     }
 
     @Override
-    public String removePadding(String pathToFile) throws IllegalArgumentException, IOException {
+    public String removePadding(String pathToFile) throws IllegalArgumentException {
         return pathToFile;
     }
 
-    private String getOutputFileName(String pathToInputFile, String prefix) {
+    private String getOutputFileName(String pathToInputFile) {
         int dotIndex = pathToInputFile.lastIndexOf('.');
         String baseName = pathToInputFile.substring(0, dotIndex);
         String extension = pathToInputFile.substring(dotIndex);
-        return baseName + prefix + extension;
+        return baseName + "_add_padding" + extension;
     }
 }

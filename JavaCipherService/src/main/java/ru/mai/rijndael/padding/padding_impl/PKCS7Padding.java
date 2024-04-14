@@ -69,8 +69,8 @@ public class PKCS7Padding implements IPadding {
     @Override
     public String removePadding(String pathToFile) throws IllegalArgumentException, IOException {
         String pathToRemovePaddingFile = getOutputFileName(pathToFile, "_remove_padding");
-        byte valuePadding = 0;
-        byte[] buffer = null;
+        byte valuePadding;
+        byte[] buffer;
 
         try (RandomAccessFile inputFile = new RandomAccessFile(pathToFile, "r")) {
             inputFile.seek(inputFile.length() - 1);
