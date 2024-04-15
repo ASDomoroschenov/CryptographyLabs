@@ -1,19 +1,111 @@
 package ru.mai.rijndael;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.testng.internal.junit.ArrayAsserts.assertArrayEquals;
 
 public class RijndaelTest {
-    private static final byte[] KEY = {
+    private static final byte[] KEY_128 = {
             (byte) 0x2b, (byte) 0x28, (byte) 0xab, (byte) 0x09,
             (byte) 0x7e, (byte) 0xae, (byte) 0xf7, (byte) 0xcf,
             (byte) 0x15, (byte) 0xd2, (byte) 0x15, (byte) 0x4f,
             (byte) 0x16, (byte) 0xa6, (byte) 0x88, (byte) 0x3c
     };
-    private static final Rijndael RIJNDAEL128 = new RijndaelImpl(KEY, 128, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
-    private static final Rijndael RIJNDAEL192 = new RijndaelImpl(KEY, 192, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
-    private static final Rijndael RIJNDAEL256 = new RijndaelImpl(KEY, 256, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
+    private static final byte[] KEY_192 = {
+            (byte) 0x2b, (byte) 0x28, (byte) 0xab, (byte) 0x09, (byte) 0x2b, (byte) 0x28,
+            (byte) 0x7e, (byte) 0xae, (byte) 0xf7, (byte) 0xcf, (byte) 0x2b, (byte) 0x28,
+            (byte) 0x15, (byte) 0xd2, (byte) 0x15, (byte) 0x4f, (byte) 0x2b, (byte) 0x28,
+            (byte) 0x16, (byte) 0xa6, (byte) 0x88, (byte) 0x3c, (byte) 0x2b, (byte) 0x28
+    };
+    private static final byte[] KEY_256 = {
+            (byte) 0x2b, (byte) 0x28, (byte) 0xab, (byte) 0x09, (byte) 0x2b, (byte) 0x28, (byte) 0xab, (byte) 0x09,
+            (byte) 0x7e, (byte) 0xae, (byte) 0xf7, (byte) 0xcf, (byte) 0x2b, (byte) 0x28, (byte) 0xab, (byte) 0x09,
+            (byte) 0x15, (byte) 0xd2, (byte) 0x15, (byte) 0x4f, (byte) 0x2b, (byte) 0x28, (byte) 0xab, (byte) 0x09,
+            (byte) 0x16, (byte) 0xa6, (byte) 0x88, (byte) 0x3c, (byte) 0x2b, (byte) 0x28, (byte) 0xab, (byte) 0x09
+    };
+    private static final Rijndael RIJNDAEL128 = new RijndaelImpl(KEY_128, 128, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
+    private static final Rijndael RIJNDAEL192 = new RijndaelImpl(KEY_128, 192, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
+    private static final Rijndael RIJNDAEL256 = new RijndaelImpl(KEY_128, 256, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923);
+
+    @DataProvider(name = "rijndaelObjects")
+    public Object[][] rijndaelObjects() {
+        return new Object[][]{
+                {new RijndaelImpl(KEY_128, 128, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)},
+                {new RijndaelImpl(KEY_128, 192, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)},
+                {new RijndaelImpl(KEY_128, 256, 128, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)},
+                {new RijndaelImpl(KEY_192, 128, 192, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)},
+                {new RijndaelImpl(KEY_192, 192, 192, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)},
+                {new RijndaelImpl(KEY_192, 256, 192, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)},
+                {new RijndaelImpl(KEY_256, 128, 256, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)},
+                {new RijndaelImpl(KEY_256, 192, 256, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)},
+                {new RijndaelImpl(KEY_256, 256, 256, (char) 0b100011011, Rijndael.PaddingMode.ANSI_X_923)}
+        };
+    }
+
+    @DataProvider(name = "testDataText")
+    public Object[][] testDataText() {
+        return new Object[][]{
+                {
+                        "Hello world!"
+                },
+                {
+                        ""
+                },
+                {
+                        """
+                                Я лишился девственности в 20 лет. Не так, как это обычно бывает с парнями моего возраста. Все куда тяжелее - и никакой романтики.
+                        """
+                },
+                {
+                        """
+                                Мой хомяк
+                        """
+                }
+        };
+    }
+
+    @DataProvider(name = "testDataFile")
+    public Object[][] testDataFile() {
+        return new Object[][]{
+                {
+                        "/home/alexandr/CryptographyLabs/JavaCipherService/src/main/resources/ru/mai/test/input/text.txt"
+                }
+        };
+    }
+
+    @Test(dataProvider = "rijndaelObjects")
+    public void testRijndaelText(Rijndael rijndael) {
+        for (Object[] testData : testDataText()) {
+            byte[] testDataText = ((String) testData[0]).getBytes();
+            byte[] encryptedBytes = rijndael.encrypt(testDataText);
+            byte[] decryptedBytes = rijndael.decrypt(encryptedBytes);
+            assertArrayEquals(testDataText, decryptedBytes);
+        }
+    }
+
+    @Test(dataProvider = "rijndaelObjects")
+    public void testRijndaelFile(Rijndael rijndael) throws IOException {
+        for (Object[] testData : testDataFile()) {
+            String fileName = (String) testData[0];
+            String encryptedFile = rijndael.encryptFile(fileName);
+            String decryptedFile = rijndael.decryptFile(encryptedFile);
+
+            Path pathDecryptedFile = Path.of(decryptedFile);
+
+            assertArrayEquals(
+                    Files.readAllBytes(Path.of(fileName)),
+                    Files.readAllBytes(pathDecryptedFile)
+            );
+
+            Files.delete(Path.of(encryptedFile));
+            Files.delete(pathDecryptedFile);
+        }
+    }
 
     @Test
     public void testSubBytes() {
